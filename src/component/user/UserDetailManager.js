@@ -12,7 +12,7 @@ function UserDetailManager(){
     const [updateTimestamp, setUpdateTimestamp] = useState(new Date())
 
     useLayoutEffect(() => {
-        fetch(/*`${process.env.REACT_APP_BASE_URI}/employees`*/`http://localhost:8080/api/v1/users/${username}`, {
+        fetch(`${process.env.REACT_APP_BASE_URI}/api/v1/users/${username}`, {
           headers: new Headers({
             'Authorization': 'Bearer ' + token,
           }),
