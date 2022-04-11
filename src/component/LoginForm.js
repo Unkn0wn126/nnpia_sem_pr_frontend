@@ -20,7 +20,7 @@ export default function LoginForm() {
   function postLogin(e) {
     e.preventDefault()
 
-    fetch(/*`${process.env.REACT_APP_BASE_URI}/api/v1/login`*/`http://localhost:8080/api/v1/login`,
+    fetch(`${process.env.REACT_APP_BASE_URI}/api/v1/login`,
       {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         headers: {
