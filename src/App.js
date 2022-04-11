@@ -9,6 +9,8 @@ import UserDetailManager from './component/user/UserDetailManager';
 function App() {
   const { user } = useAuth()
 
+  console.log(process.env.REACT_APP_BASE_URI);
+
   const nav = user && [
     {
       title: "Home",
