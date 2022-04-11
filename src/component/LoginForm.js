@@ -35,7 +35,7 @@ export default function LoginForm() {
         throw new Error(`Unable to get data: ${response.statusText}`)
       })
       .then(json => {
-        setTokens(json.token);
+        setTokens(json.jwttoken);
         setLoggedIn(true);
       })
       .catch((err) => {
