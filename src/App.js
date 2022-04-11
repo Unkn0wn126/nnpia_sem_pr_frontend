@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Link, Navigate, Routes, Route } from "react-ro
 import { useAuth } from "./component/AuthContext";
 import LoginForm from "./component/LoginForm";
 import IssueManager from "./component/issue/IssueManager";
+import UserDetailManager from './component/user/UserDetailManager';
 
 function App() {
   const { user } = useAuth()
@@ -19,7 +20,7 @@ function App() {
     },
     {
       title: "Profile",
-      to: "/profile",
+      to: `/users/${user.sub}`,
     },
     {
       title: "Logout",
@@ -43,7 +44,7 @@ function App() {
             renders the first one that matches the current URL. */}
       <Routes>
         <Route exact path="/issues" element={<IssueManager />}/>
-        <Route exact path="/profile" element={<Profile/>} />
+        <Route exact path={"/users/:username"} element={<UserDetailManager />} />
         <Route exact path="/Logout" element={<Logout/>} />
         <Route exact path="/" element={<Home/>} />
         <Route render={() => <Navigate to="/"/>}/>
