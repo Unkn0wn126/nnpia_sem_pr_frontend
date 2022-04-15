@@ -6,6 +6,7 @@ import { AppBar } from '@mui/material';
 import IssueService from './services/issue.service';
 import AuthService from './services/auth.service';
 import Login from './components/authentication/Login';
+import Register from './components/authentication/Register';
 
 function App() {
   //IssueService.getAllPublicIssues().then(data => console.log(data));
@@ -26,7 +27,7 @@ function App() {
 
   return (
     <div>
-      <Login></Login>
+      <Register></Register>
     </div>
   )
 }

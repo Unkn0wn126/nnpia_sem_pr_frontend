@@ -8,7 +8,7 @@ import { Alert, Avatar, Button, FormGroup, LinearProgress } from "@mui/material"
 import { Formik, Form, Field } from "formik";
 import { TextField } from 'formik-mui';
 
-const Login = () => {
+const Register = () => {
     let navigate = useNavigate();
     const [message, setMessage] = useState("");
 
@@ -20,7 +20,11 @@ const Login = () => {
                     <Formik
                         initialValues={{
                             username: "",
-                            password: ""
+                            password: "",
+                            passwordCheck: "",
+                            email: "",
+                            nickname: "",
+                            profilePicturePath: ""
                         }}
                         validate={(values) => {
                             const errors = {};
@@ -30,6 +34,23 @@ const Login = () => {
                             if (!values.password) {
                                 errors.password = 'Password is required'
                             }
+                            if (!values.passwordCheck) {
+                                errors.passwordCheck = 'Password check is required'
+                            }
+                            if (values.password !== values.passwordCheck) {
+                                errors.passwordCheck = 'Passwords don\'t match'
+                                errors.password = 'Passwords don\'t match'
+                            }
+                            if (!values.email) {
+                                errors.email = 'Required';
+                            } else if (
+                                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+                            ) {
+                                errors.email = 'Invalid email address';
+                            }
+                            if(!values.nickname){
+                                errors.nickname = 'Nickname is required'
+                            }
 
                             return errors;
                         }}
@@ -37,7 +58,7 @@ const Login = () => {
                         validateOnBlur={true}
                         onSubmit={(data, { setSubmitting }) => {
                             setMessage("");
-                            AuthService.login(data).then(
+                            AuthService.register({email:data.email, password:data.password, profile:{nickname: data.nickname, profilePicturePath: data.profilePicturePath}, username: data.username}).then(
                                 () => {
                                     navigate("/profile");
                                     window.location.reload();
@@ -72,6 +93,38 @@ const Login = () => {
                                         label="Password"
                                     />
                                 </FormGroup>
+                                <FormGroup className="form-group-spaced">
+                                    <Field
+                                        component={TextField}
+                                        name="passwordCheck"
+                                        type="password"
+                                        label="Password again"
+                                    />
+                                </FormGroup>
+                                <FormGroup className="form-group-spaced">
+                                    <Field
+                                        component={TextField}
+                                        name="email"
+                                        type="email"
+                                        label="Email"
+                                    />
+                                </FormGroup>
+                                <FormGroup className="form-group-spaced">
+                                    <Field
+                                        component={TextField}
+                                        name="nickname"
+                                        type="text"
+                                        label="Nickname"
+                                    />
+                                </FormGroup>
+                                <FormGroup className="form-group-spaced">
+                                    <Field
+                                        component={TextField}
+                                        name="profilePicturePath"
+                                        type="text"
+                                        label="Profile picture path"
+                                    />
+                                </FormGroup>
 
                                 {isSubmitting && <LinearProgress className="form-group-spaced" />}
                                 <FormGroup className="form-group-spaced">
@@ -81,7 +134,7 @@ const Login = () => {
                                         disabled={isSubmitting}
                                         onClick={submitForm}
                                     >
-                                        Login
+                                        Register
                                     </Button>
                                 </FormGroup>
                                 {message && (
@@ -99,4 +152,4 @@ const Login = () => {
     );
 }
 
-export default Login;
+export default Register;
