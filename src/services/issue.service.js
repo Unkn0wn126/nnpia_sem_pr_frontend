@@ -1,7 +1,8 @@
 import axios from "axios";
+import authHeader from "./auth-header";
 
 const getAllIssues = () => {
-    return axios.get(`${process.env.REACT_APP_BASE_URI}/api/v1/issues/`)
+    return axios.get(`${process.env.REACT_APP_BASE_URI}/api/v1/issues/`, {headers: authHeader()})
 }
 
 const getIssuesByAuthorName = (authorName) => {
