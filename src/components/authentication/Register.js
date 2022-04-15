@@ -4,7 +4,7 @@ import AuthService from "../../services/auth.service";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Container from '@mui/material/Container';
-import { Alert, Avatar, Button, FormGroup, LinearProgress } from "@mui/material";
+import { Alert, Avatar, Button, FormGroup, LinearProgress, CardHeader } from "@mui/material";
 import { Formik, Form, Field } from "formik";
 import { TextField } from 'formik-mui';
 
@@ -16,6 +16,7 @@ const Register = () => {
         <Container maxWidth="sm">
             <Card variant="outlined">
                 <CardContent>
+                    <CardHeader className="content-center text-center" component="h3" title="Register"/>
                     <Avatar className="content-center form-group-spaced" src="logo.svg" sx={{ width: 100, height: 100 }} />
                     <Formik
                         initialValues={{
@@ -62,6 +63,7 @@ const Register = () => {
                                 () => {
                                     navigate("/profile");
                                     window.location.reload();
+                                    setSubmitting(false);
                                 },
                                 (error) => {
                                     const resMessage =
@@ -71,9 +73,9 @@ const Register = () => {
                                         error.message ||
                                         error.toString();
                                     setMessage(resMessage);
+                                    setSubmitting(false);
                                 }
-                            );
-                            setSubmitting(false);
+                            )
                         }}>
                         {({ submitForm, isSubmitting }) => (
                             <Form>
