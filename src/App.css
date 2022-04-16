@@ -37,8 +37,13 @@
   }
 }
 
+.container{
+  margin: 0 auto;
+  margin-top: 70px;
+}
+
 .content-center{
-  margin: 0 auto
+  margin: 0 auto;
 }
 
 .text-center{

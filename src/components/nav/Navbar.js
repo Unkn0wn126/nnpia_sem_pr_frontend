@@ -1,15 +1,15 @@
-import { AppBar, Box, Container, IconButton, Toolbar, Typography, Menu, MenuItem, Button, Tooltip, Avatar, InputBase } from "@mui/material";
+import { AppBar, Box, Container, IconButton, Toolbar, Typography, Menu, MenuItem, Button, Tooltip, Avatar, Link } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from "react";
 import Search from "./Search";
 import SearchIconWrapper from "./SearchIconWrapper";
 import StyledInputBase from "./StyledInputBase";
+import { Routes, Route, Link as RouterLink } from "react-router-dom";
 
-const pages = ['Home', 'Issues'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-const Navbar = () => {
+const Navbar = ({currentUser, pages, settings}) => {
+    console.log(currentUser);
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -27,11 +27,10 @@ const Navbar = () => {
 
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
-    const [auth, setAuth] = useState(true);
 
     return (
         <nav>
-            <AppBar position="fixed">
+            <AppBar position="fixed" sx={{height: "70px"}}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         <Typography
@@ -82,21 +81,21 @@ const Navbar = () => {
 
                                 </Search>
                                 {pages.map((page) => (
-                                    <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                        <Typography textAlign="center">{page}</Typography>
+                                    <MenuItem key={page.text} onClick={handleCloseNavMenu}>
+                                        <Link component={RouterLink} to={page.link} textAlign="center" underline="none">{page.text}</Link>
                                     </MenuItem>
                                 ))}
-                                {!auth && (
+                                {!currentUser && (
                                     <div>
                                         <MenuItem
                                             onClick={handleCloseNavMenu}
                                         >
-                                            <Typography textAlign="center">Login</Typography>
+                                            <Link component={RouterLink} to={"/login"} textAlign="center" underline="none">Login</Link>
                                         </MenuItem>
                                         <MenuItem
                                             onClick={handleCloseNavMenu}
                                         >
-                                            <Typography textAlign="center">Register</Typography>
+                                            <Link component={RouterLink} to={"/register"} textAlign="center" underline="none">Register</Link>
                                         </MenuItem>
                                     </div>
                                 )}
@@ -111,15 +110,19 @@ const Navbar = () => {
                         >
                             Issue tracker
                         </Typography>
-                        <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                        <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: '10px'  }}>
                             {pages.map((page) => (
-                                <Button
-                                    key={page}
+                                <Link
+                                component={RouterLink}
+                                    key={page.text}
                                     onClick={handleCloseNavMenu}
-                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                    sx={{ my: 2, color: '#ffffff', display: 'block' }}
+                                        variant="button"
+                                        underline='none'
+                                        to={page.link}
                                 >
-                                    {page}
-                                </Button>
+                                    {page.text}
+                                </Link>
                             ))}
                             <Search>
                                 <SearchIconWrapper>
@@ -131,11 +134,11 @@ const Navbar = () => {
                                 />
                             </Search>
                         </Toolbar>
-                        {auth && (
+                        {currentUser && (
                             <Box sx={{ flexGrow: 0 }}>
                                 <Tooltip title="Open settings">
                                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                        <Avatar alt={currentUser.sub} src="/static/images/avatar/2.jpg" />
                                     </IconButton>
                                 </Tooltip>
                                 <Menu
@@ -155,28 +158,32 @@ const Navbar = () => {
                                     onClose={handleCloseUserMenu}
                                 >
                                     {settings.map((setting) => (
-                                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                            <Typography textAlign="center">{setting}</Typography>
+                                        <MenuItem key={setting.text} onClick={handleCloseUserMenu}>
+                                            <Link component={RouterLink} to={setting.link} textAlign="center" underline="none" onClick={setting.onClick}>{setting.text}</Link>
                                         </MenuItem>
                                     ))}
                                 </Menu>
                             </Box>
                         )}
-                        {!auth && (
+                        {!currentUser && (
                             <Box sx={{ flexGrow: 0 }}>
-                                <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                                    <Button
+                                <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: '10px' }}>
+                                    <Link component={RouterLink} to={"/login"}
                                         onClick={handleCloseNavMenu}
-                                        sx={{ my: 2, color: 'white', display: 'block' }}
+                                        sx={{ my: 2, color: '#ffffff', display: 'block', borderRadius:"7px", outline: "2px solid", padding:"7px" }}
+                                        variant="button"
+                                        underline='none'
                                     >
-                                        Login
-                                    </Button>
-                                    <Button
+                                        LOGIN
+                                    </Link>
+                                    <Link component={RouterLink} to={"/register"}
                                         onClick={handleCloseNavMenu}
-                                        sx={{ my: 2, color: 'white', display: 'block' }}
+                                        sx={{ my: 2, color: '#ffffff', display: 'block' }}
+                                        variant="button"
+                                        underline='none'
                                     >
-                                        Register
-                                    </Button>
+                                        REGISTER
+                                    </Link>
                                 </Toolbar>
                             </Box>
                         )}

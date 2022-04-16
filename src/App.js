@@ -1,5 +1,5 @@
 import './App.css';
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Link, Navigate, Routes, Route } from "react-router-dom";
 import Button from '@mui/material/Button';
 import { AppBar } from '@mui/material';
@@ -26,25 +26,54 @@ function App() {
     // IssueService.createIssue({content: "Some content", dueDate: null, header: "Posted from frontend!", severity: "LOW", visibility: "PUBLIC"});
     // AuthService.register({username: "newwuser", email: "neww@example.com", password: "P4ssw0rd$", profile: { nickname: "Neww user", profilePicturePath: null}});
 
+    const [currentUser, setCurrentUser] = useState(undefined);
+
+    useEffect(() => {
+      const user = AuthService.getCurrentUser();
+      if(user) {
+        setCurrentUser(user);
+      }
+    }, [])
+
+    const logout = () => {
+      AuthService.logout();
+      setCurrentUser(undefined);
+    }
+
+    const pages = [
+      {text: 'Home', link: '/home'}, 
+      {text: 'Issues', link: '/issues'}
+    ];
+    
+    const settings = [
+      {text: 'Profile', link: '/profile', onClick: null}, 
+      {text: 'Account', link:'/account', onClick: null}, 
+      {text: 'Dashboard', link: '/dashboard', onClick: null}, 
+      {text: 'Logout', link:'/logout', onClick: logout}
+    ];
+
   return (
     <div>
-    <Navbar></Navbar>
+    <Navbar currentUser={currentUser} pages={pages} settings={settings} />
+    <div className='container'>
       <Routes>
-        <Route path="/" element={<Login/>} />
-        <Route path="/home" element={<Login/>} />
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/register" element={<Register/>}/>
-        <Route path="/users" element={<Register/>}/>
-        <Route path="/users/:username" element={<Register/>}/>
-        <Route path="/issues" element={<Register/>}/>
-        <Route path="/issues/:issueId" element={<Register/>}/>
-        <Route path="/admin/issues" element={<Register/>}/>
-        <Route path="/admin/issues/:issueId" element={<Register/>}/>
-        <Route path="/admin/users" element={<Register/>}/>
-        <Route path="/admin/users/:username" element={<Register/>}/>
-        <Route path="/admin/comments" element={<Register/>}/>
-        <Route path="/admin/comments/:commentId" element={<Register/>}/>
-      </Routes>
+          <Route path="/" element={<Login/>} />
+          <Route path="/home" element={<Login/>} />
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/logout" element={<Login/>}/>
+          <Route path="/register" element={<Register/>}/>
+          <Route path="/users" element={<Register/>}/>
+          <Route path="/users/:username" element={<Register/>}/>
+          <Route path="/issues" element={<Register/>}/>
+          <Route path="/issues/:issueId" element={<Register/>}/>
+          <Route path="/admin/issues" element={<Register/>}/>
+          <Route path="/admin/issues/:issueId" element={<Register/>}/>
+          <Route path="/admin/users" element={<Register/>}/>
+          <Route path="/admin/users/:username" element={<Register/>}/>
+          <Route path="/admin/comments" element={<Register/>}/>
+          <Route path="/admin/comments/:commentId" element={<Register/>}/>
+        </Routes>
+    </div>
     </div>
   )
 }
