@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Link, Navigate, Routes, Route } from "react-router-dom";
 import Button from '@mui/material/Button';
 import { AppBar } from '@mui/material';
@@ -8,6 +8,7 @@ import AuthService from './services/auth.service';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Navbar from './components/nav/Navbar';
+import { UserContext } from './providers/UserContext'
 
 function App() {
   //IssueService.getAllPublicIssues().then(data => console.log(data));
@@ -25,20 +26,7 @@ function App() {
     //IssueService.updateIssue(1, {content: "Some content", dueDate: null, header: "Posted from frontend!", severity: "LOW", visibility: "INTERNAL", completionState: "IN_PROGRESS"});
     // IssueService.createIssue({content: "Some content", dueDate: null, header: "Posted from frontend!", severity: "LOW", visibility: "PUBLIC"});
     // AuthService.register({username: "newwuser", email: "neww@example.com", password: "P4ssw0rd$", profile: { nickname: "Neww user", profilePicturePath: null}});
-
-    const [currentUser, setCurrentUser] = useState(undefined);
-
-    useEffect(() => {
-      const user = AuthService.getCurrentUser();
-      if(user) {
-        setCurrentUser(user);
-      }
-    }, [])
-
-    const logout = () => {
-      AuthService.logout();
-      setCurrentUser(undefined);
-    }
+    const { user, logout } = useContext(UserContext);
 
     const pages = [
       {text: 'Home', link: '/home'}, 
@@ -54,7 +42,7 @@ function App() {
 
   return (
     <div>
-    <Navbar currentUser={currentUser} pages={pages} settings={settings} />
+    <Navbar currentUser={user} pages={pages} settings={settings} />
     <div className='container'>
       <Routes>
           <Route path="/" element={<Login/>} />

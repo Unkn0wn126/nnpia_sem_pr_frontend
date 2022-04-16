@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import AuthService from "../../services/auth.service";
 import Card from '@mui/material/Card';
@@ -8,6 +8,7 @@ import { Alert, Avatar, Button, FormGroup, LinearProgress, CardHeader } from "@m
 import { Formik, Form, Field } from "formik";
 import { TextField } from 'formik-mui';
 import * as Yup from "yup";
+import UserContext from "../../providers/UserContext";
 
 const LoginForm = (props) => {
     let navigate = useNavigate();
@@ -17,6 +18,8 @@ const LoginForm = (props) => {
         username: Yup.string().required("Username is required"),
         password: Yup.string().required("Password is required")
     });
+
+    const {login} = useContext(UserContext);
 
     return (
             <Card variant="outlined">
@@ -33,7 +36,7 @@ const LoginForm = (props) => {
                         validateOnBlur={true}
                         onSubmit={(data, { setSubmitting }) => {
                             setMessage("");
-                            AuthService.login(data).then(
+                            login(data).then(
                                 () => {
                                     navigate("/profile");
                                     window.location.reload();

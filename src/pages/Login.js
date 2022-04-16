@@ -1,7 +1,14 @@
 import Container from '@mui/material/Container';
+import { useContext } from 'react';
 import LoginForm from '../components/authentication/LoginForm'
+import { UserContext } from '../providers/UserContext'
+import { Navigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = (props) => {
+    const {user} = useContext(UserContext)
+    if (user){
+        return <Navigate replace to="/profile" />
+    }
     return (        
     <Container maxWidth="sm">
         <LoginForm />

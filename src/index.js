@@ -4,14 +4,18 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import { UserProvider } from './providers/UserContext';
+import { history } from "./helpers/history";
 
 const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render(
-  <BrowserRouter>
-      <App/>
-  </BrowserRouter>
+  <UserProvider>
+    <BrowserRouter history={history}>
+        <App/>
+    </BrowserRouter>
+  </UserProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
