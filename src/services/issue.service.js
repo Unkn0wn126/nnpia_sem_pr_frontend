@@ -7,8 +7,8 @@ const getAllIssues = (pageNumber) => {
     return axios.get(`${process.env.REACT_APP_BASE_URI}/api/v1/issues/?pageNumber=${pageNumber}`, {headers: authHeader()})
 }
 
-const getIssuesByAuthorName = (authorName) => {
-    return axios.get(`${process.env.REACT_APP_BASE_URI}/api/v1/issues/user/${authorName}`, {headers: authHeader()})
+const getIssuesByAuthorName = (authorName, pageNumber) => {
+    return axios.get(`${process.env.REACT_APP_BASE_URI}/api/v1/issues/user/${authorName}?pageNumber=${pageNumber}`, {headers: authHeader()})
 }
 
 const getIssueById = (id) => {
