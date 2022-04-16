@@ -66,7 +66,7 @@ function App() {
           <Route path="/issues" element={<IssueDashboard />} />
           <Route path="/issues/create" element={<IssueDashboard />} />
           <Route path="/issues/:issueId" element={<IssueDetailPage />} />
-          <Route path="/admin/issues" element={<Register />} />
+          <Route path="/admin/issues?page=:page" element={<Register />} />
           <Route path="/admin/issues/create" element={<Register />} />
           <Route path="/admin/issues/:issueId" element={<IssueDetailPage />} />
           <Route path="/admin/users" element={<Register />} />

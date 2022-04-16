@@ -6,16 +6,25 @@ import CommentList from "../comments/CommentList";
 import IssueService from '../../services/issue.service';
 import CommentCreate from "../comments/CommentCreate";
 import CommentService from "../../services/comment.service";
+import CommentPagination from "../comments/CommentPagination";
 
 const IssueDetail = ({ issue, viewingUser }) => {
-    const [comments, setComments] = useState([]);
+    const [comments, setComments] = useState(undefined);
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
+    const handlePageChange = (event, value) => {
+        setPage(value);
+        fetchComments(value - 1);
+    }
     const fetchComments = (page) => {
         setIsLoading(true);
         CommentService.getCommentsByIssueId(issue.id, page)
             .then((data) => {
-                setComments(data.data.comments);
+                setComments(data.data);
+                if(data.data.totalPages <= data.data.currentPage && data.data.currentPage > 0){
+                    setPage((previous) => previous - 1);
+                    fetchComments(page - 1);
+                }
             })
             .catch((err) => {
 
@@ -27,6 +36,7 @@ const IssueDetail = ({ issue, viewingUser }) => {
     useEffect(() => {
         fetchComments(page - 1);
     }, []);
+
     const handleCommentSubmit = () => {
         fetchComments(page - 1);
     }
@@ -55,10 +65,14 @@ const IssueDetail = ({ issue, viewingUser }) => {
                     {issue.content}
                 </Typography>
                 <Divider />
-                <Typography variant="h6" color="text.secondary">
-                    Create comment
-                </Typography>
-                <CommentCreate issue={issue} onCommentSubmit={handleCommentSubmit} />
+                {viewingUser && (
+                    <>
+                    <Typography variant="h6" color="text.secondary">
+                        Create comment
+                    </Typography>
+                    <CommentCreate issue={issue} onCommentSubmit={handleCommentSubmit} />
+                    </>
+                )}
                 <Divider />
                 <Typography variant="h6" color="text.secondary">
                     Comments
@@ -67,7 +81,15 @@ const IssueDetail = ({ issue, viewingUser }) => {
                     <CircularProgress />
                 )}
                 {comments && (
-                    <CommentList commentList={comments} viewingUser={viewingUser} onCommentSubmit={handleCommentSubmit} onCommentDelete={handleCommentDelete} />
+                    <CommentPagination 
+                    issue={issue} 
+                    comments={comments} 
+                    viewingUser={viewingUser} 
+                    onCommentSubmit={handleCommentSubmit} 
+                    onCommentDelete={handleCommentDelete}
+                    page={page}
+                    handlePageChange={handlePageChange}
+                    isLoadingComments={isLoading} />
                 )}
             </CardContent>
         </Card>

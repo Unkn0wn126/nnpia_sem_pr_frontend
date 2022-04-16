@@ -5,14 +5,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { UserProvider } from './providers/UserContext';
-import { history } from "./helpers/history";
 
 const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render(
   <UserProvider>
-    <BrowserRouter history={history}>
+    <BrowserRouter>
         <App/>
     </BrowserRouter>
   </UserProvider>
