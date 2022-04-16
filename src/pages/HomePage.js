@@ -1,21 +1,25 @@
 import { UserContext } from '../providers/UserContext'
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { Routes, Route, Link as RouterLink, useParams, Navigate } from "react-router-dom";
-import { Box, CircularProgress, Container, Grid, Pagination, Stack, Typography } from '@mui/material';
+import { Box, Card, CardContent, CircularProgress, Container, Grid, Pagination, Stack, Typography } from '@mui/material';
 
 const HomePage = (props) => {
-    const {user} = useContext(UserContext);
+    const { user } = useContext(UserContext);
 
-    if(user){
+    if (user) {
         return <Navigate replace to={`/users/${user.sub}`} />
     }
 
     return (
-        <Container maxWidth="md">
-            <Box sx={{paddingTop:"30px", paddingBottom: "20px"}} alignItems="center">
-                <Typography variant='h1' component="h1">
-                    Issue tracker
-                </Typography>
+        <Container maxWidth="xl">
+            <Box sx={{ paddingTop: "30px", paddingBottom: "20px" }} alignItems="center">
+                <Card>
+                    <CardContent>
+                        <Typography variant='h1' component="h1">
+                            Issue tracker
+                        </Typography>
+                    </CardContent>
+                </Card>
             </Box>
         </Container>
     );
