@@ -9,6 +9,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Navbar from './components/nav/Navbar';
 import { UserContext } from './providers/UserContext'
+import IssueDashboard from './pages/issues/IssueDashboard';
+import IssueDetailPage from './pages/issues/IssueDetailPage';
 
 function App() {
   //IssueService.getAllPublicIssues().then(data => console.log(data));
@@ -52,10 +54,10 @@ function App() {
           <Route path="/register" element={<Register/>}/>
           <Route path="/users" element={<Register/>}/>
           <Route path="/users/:username" element={<Register/>}/>
-          <Route path="/issues" element={<Register/>}/>
-          <Route path="/issues/:issueId" element={<Register/>}/>
+          <Route path="/issues" element={<IssueDashboard/>}/>
+          <Route path="/issues/:issueId" element={<IssueDetailPage/>}/>
           <Route path="/admin/issues" element={<Register/>}/>
-          <Route path="/admin/issues/:issueId" element={<Register/>}/>
+          <Route path="/admin/issues/:issueId" element={<IssueDetailPage/>}/>
           <Route path="/admin/users" element={<Register/>}/>
           <Route path="/admin/users/:username" element={<Register/>}/>
           <Route path="/admin/comments" element={<Register/>}/>

@@ -3,8 +3,8 @@ import authHeader from "./auth-header";
 
 // Authorized
 
-const getAllIssues = () => {
-    return axios.get(`${process.env.REACT_APP_BASE_URI}/api/v1/issues/`, {headers: authHeader()})
+const getAllIssues = (pageNumber) => {
+    return axios.get(`${process.env.REACT_APP_BASE_URI}/api/v1/issues/?pageNumber=${pageNumber}`, {headers: authHeader()})
 }
 
 const getIssuesByAuthorName = (authorName) => {
@@ -56,8 +56,8 @@ const updateIssueAdmin = (id, issueUpdateDto) => {
 
 // Public
 
-const getAllPublicIssues = () => {
-    return axios.get(`${process.env.REACT_APP_BASE_URI}/api/v1/public/issues/`)
+const getAllPublicIssues = (pageNumber) => {
+    return axios.get(`${process.env.REACT_APP_BASE_URI}/api/v1/public/issues/?pageNumber=${pageNumber}`)
 }
 
 const getPublicIssuesByAuthorName = (authorName) => {
