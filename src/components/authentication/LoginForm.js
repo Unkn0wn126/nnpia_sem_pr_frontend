@@ -9,40 +9,31 @@ import { Formik, Form, Field } from "formik";
 import { TextField } from 'formik-mui';
 import * as Yup from "yup";
 
-const Register = () => {
+const LoginForm = (props) => {
     let navigate = useNavigate();
     const [message, setMessage] = useState("");
 
     const validationSchema = Yup.object({
-        username: Yup.string().required('Username is required'),
-        password: Yup.string().required('Password is required').min(8, 'Your password is too short').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 'Password must contain at least one uppercase and lowercase letter, number and special character'),
-        passwordCheck: Yup.string().required('Confirm password is required').oneOf([Yup.ref('password')], 'Passwords must match'),
-        email: Yup.string().email().required('Email is required'),
-        nickname: Yup.string().required('Nickname is required'),
-        profilePicturePath: Yup.string().nullable()
-    })
+        username: Yup.string().required("Username is required"),
+        password: Yup.string().required("Password is required")
+    });
 
     return (
-        <Container maxWidth="sm">
             <Card variant="outlined">
                 <CardContent>
-                    <CardHeader className="content-center text-center" component="h3" title="Register"/>
+                    <CardHeader className="content-center text-center" component="h3" title="Login"/>
                     <Avatar className="content-center form-group-spaced" src="logo.svg" sx={{ width: 100, height: 100 }} />
                     <Formik
                         initialValues={{
                             username: "",
-                            password: "",
-                            passwordCheck: "",
-                            email: "",
-                            nickname: "",
-                            profilePicturePath: ""
+                            password: ""
                         }}
                         validationSchema={validationSchema}
                         validateOnChange={true}
                         validateOnBlur={true}
                         onSubmit={(data, { setSubmitting }) => {
                             setMessage("");
-                            AuthService.register({email:data.email, password:data.password, profile:{nickname: data.nickname, profilePicturePath: data.profilePicturePath}, username: data.username}).then(
+                            AuthService.login(data).then(
                                 () => {
                                     navigate("/profile");
                                     window.location.reload();
@@ -78,38 +69,6 @@ const Register = () => {
                                         label="Password"
                                     />
                                 </FormGroup>
-                                <FormGroup className="form-group-spaced">
-                                    <Field
-                                        component={TextField}
-                                        name="passwordCheck"
-                                        type="password"
-                                        label="Confirm password"
-                                    />
-                                </FormGroup>
-                                <FormGroup className="form-group-spaced">
-                                    <Field
-                                        component={TextField}
-                                        name="email"
-                                        type="email"
-                                        label="Email"
-                                    />
-                                </FormGroup>
-                                <FormGroup className="form-group-spaced">
-                                    <Field
-                                        component={TextField}
-                                        name="nickname"
-                                        type="text"
-                                        label="Nickname"
-                                    />
-                                </FormGroup>
-                                <FormGroup className="form-group-spaced">
-                                    <Field
-                                        component={TextField}
-                                        name="profilePicturePath"
-                                        type="text"
-                                        label="Profile picture path"
-                                    />
-                                </FormGroup>
 
                                 {isSubmitting && <LinearProgress className="form-group-spaced" />}
                                 <FormGroup className="form-group-spaced">
@@ -119,8 +78,9 @@ const Register = () => {
                                         disabled={isSubmitting}
                                         onClick={submitForm}
                                     >
-                                        Register
+                                        Login
                                     </Button>
+                                    <input type="submit" hidden/>
                                 </FormGroup>
                                 {message && (
                                     <FormGroup className="form-group-spaced">
@@ -133,8 +93,7 @@ const Register = () => {
                     </Formik>
                 </CardContent>
             </Card>
-        </Container>
     );
 }
 
-export default Register;
+export default LoginForm;

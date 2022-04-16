@@ -8,8 +8,7 @@ import StyledInputBase from "./StyledInputBase";
 import { Routes, Route, Link as RouterLink } from "react-router-dom";
 
 
-const Navbar = ({currentUser, pages, settings}) => {
-    console.log(currentUser);
+const Navbar = ({ currentUser, pages, settings }) => {
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -30,7 +29,7 @@ const Navbar = ({currentUser, pages, settings}) => {
 
     return (
         <nav>
-            <AppBar position="fixed" sx={{height: "70px"}}>
+            <AppBar position="fixed" sx={{ height: "70px" }}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         <Typography
@@ -81,22 +80,28 @@ const Navbar = ({currentUser, pages, settings}) => {
 
                                 </Search>
                                 {pages.map((page) => (
-                                    <MenuItem key={page.text} onClick={handleCloseNavMenu}>
-                                        <Link component={RouterLink} to={page.link} textAlign="center" underline="none">{page.text}</Link>
-                                    </MenuItem>
+                                    <Link key={page.text} component={RouterLink} to={page.link} textAlign="center" underline="none">
+                                        <MenuItem onClick={handleCloseNavMenu}>
+                                            {page.text}
+                                        </MenuItem>
+                                    </Link>
                                 ))}
                                 {!currentUser && (
                                     <div>
-                                        <MenuItem
-                                            onClick={handleCloseNavMenu}
-                                        >
-                                            <Link component={RouterLink} to={"/login"} textAlign="center" underline="none">Login</Link>
-                                        </MenuItem>
-                                        <MenuItem
-                                            onClick={handleCloseNavMenu}
-                                        >
-                                            <Link component={RouterLink} to={"/register"} textAlign="center" underline="none">Register</Link>
-                                        </MenuItem>
+                                        <Link component={RouterLink} to={"/login"} textAlign="center" underline="none">
+                                            <MenuItem
+                                                onClick={handleCloseNavMenu}
+                                            >
+                                                Login
+                                            </MenuItem>
+                                        </Link>
+                                        <Link component={RouterLink} to={"/register"} textAlign="center" underline="none">
+                                            <MenuItem
+                                                onClick={handleCloseNavMenu}
+                                            >
+                                                Register
+                                            </MenuItem>
+                                        </Link>
                                     </div>
                                 )}
 
@@ -110,16 +115,16 @@ const Navbar = ({currentUser, pages, settings}) => {
                         >
                             Issue tracker
                         </Typography>
-                        <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: '10px'  }}>
+                        <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: '10px' }}>
                             {pages.map((page) => (
                                 <Link
-                                component={RouterLink}
+                                    component={RouterLink}
                                     key={page.text}
                                     onClick={handleCloseNavMenu}
                                     sx={{ my: 2, color: '#ffffff', display: 'block' }}
-                                        variant="button"
-                                        underline='none'
-                                        to={page.link}
+                                    variant="button"
+                                    underline='none'
+                                    to={page.link}
                                 >
                                     {page.text}
                                 </Link>
@@ -158,9 +163,11 @@ const Navbar = ({currentUser, pages, settings}) => {
                                     onClose={handleCloseUserMenu}
                                 >
                                     {settings.map((setting) => (
-                                        <MenuItem key={setting.text} onClick={handleCloseUserMenu}>
-                                            <Link component={RouterLink} to={setting.link} textAlign="center" underline="none" onClick={setting.onClick}>{setting.text}</Link>
-                                        </MenuItem>
+                                        <Link key={setting.text} component={RouterLink} to={setting.link} textAlign="center" underline="none" onClick={setting.onClick}>
+                                            <MenuItem onClick={handleCloseUserMenu}>
+                                                {setting.text}
+                                            </MenuItem>
+                                        </Link>
                                     ))}
                                 </Menu>
                             </Box>
@@ -170,7 +177,7 @@ const Navbar = ({currentUser, pages, settings}) => {
                                 <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: '10px' }}>
                                     <Link component={RouterLink} to={"/login"}
                                         onClick={handleCloseNavMenu}
-                                        sx={{ my: 2, color: '#ffffff', display: 'block', borderRadius:"7px", outline: "2px solid", padding:"7px" }}
+                                        sx={{ my: 2, color: '#ffffff', display: 'block', borderRadius: "7px", outline: "2px solid", padding: "7px" }}
                                         variant="button"
                                         underline='none'
                                     >

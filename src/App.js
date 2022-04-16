@@ -5,8 +5,8 @@ import Button from '@mui/material/Button';
 import { AppBar } from '@mui/material';
 import IssueService from './services/issue.service';
 import AuthService from './services/auth.service';
-import Login from './components/authentication/Login';
-import Register from './components/authentication/Register';
+import Login from './pages/Login';
+import Register from './pages/Register';
 import Navbar from './components/nav/Navbar';
 
 function App() {
