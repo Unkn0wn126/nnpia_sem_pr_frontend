@@ -46,7 +46,7 @@ const IssueDashboard = (props) => {
                     <CircularProgress />
                 )}
                 {issues && (
-                    <Stack spacing={4} alignItems="stretch" justifyContent="space-evenly">
+                    <Stack spacing={4} alignItems="stretch" justifyContent="flex-end">
                         <IssueList issueList={issues.issues} />
                         <Box sx={{display: "flex", alignItems:"center", justifyContent:"center"}}>
                             <Pagination count={issues.totalPages} page={page} onChange={handlePageChange} color="primary"/>

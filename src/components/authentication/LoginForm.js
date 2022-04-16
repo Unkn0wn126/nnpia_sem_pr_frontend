@@ -38,7 +38,7 @@ const LoginForm = (props) => {
                             setMessage("");
                             login(data).then(
                                 () => {
-                                    navigate("/profile");
+                                    navigate(`/users/${data.username}`);
                                     window.location.reload();
                                     setSubmitting(false);
                                 },
