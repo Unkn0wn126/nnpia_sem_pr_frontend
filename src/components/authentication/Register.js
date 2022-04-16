@@ -7,10 +7,20 @@ import Container from '@mui/material/Container';
 import { Alert, Avatar, Button, FormGroup, LinearProgress, CardHeader } from "@mui/material";
 import { Formik, Form, Field } from "formik";
 import { TextField } from 'formik-mui';
+import * as Yup from "yup";
 
 const Register = () => {
     let navigate = useNavigate();
     const [message, setMessage] = useState("");
+
+    const validationSchema = Yup.object({
+        username: Yup.string().required('Username is required'),
+        password: Yup.string().required('Password is required').min(8, 'Your password is too short').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 'Password must contain at least one uppercase and lowercase letter, number and special character'),
+        passwordCheck: Yup.string().required('Confirm password is required').oneOf([Yup.ref('password')], 'Passwords must match'),
+        email: Yup.string().email().required('Email is required'),
+        nickname: Yup.string().required('Nickname is required'),
+        profilePicturePath: Yup.string().nullable()
+    })
 
     return (
         <Container maxWidth="sm">
@@ -27,34 +37,7 @@ const Register = () => {
                             nickname: "",
                             profilePicturePath: ""
                         }}
-                        validate={(values) => {
-                            const errors = {};
-                            if (!values.username) {
-                                errors.username = 'Username is required'
-                            }
-                            if (!values.password) {
-                                errors.password = 'Password is required'
-                            }
-                            if (!values.passwordCheck) {
-                                errors.passwordCheck = 'Password check is required'
-                            }
-                            if (values.password !== values.passwordCheck) {
-                                errors.passwordCheck = 'Passwords don\'t match'
-                                errors.password = 'Passwords don\'t match'
-                            }
-                            if (!values.email) {
-                                errors.email = 'Required';
-                            } else if (
-                                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-                            ) {
-                                errors.email = 'Invalid email address';
-                            }
-                            if(!values.nickname){
-                                errors.nickname = 'Nickname is required'
-                            }
-
-                            return errors;
-                        }}
+                        validationSchema={validationSchema}
                         validateOnChange={true}
                         validateOnBlur={true}
                         onSubmit={(data, { setSubmitting }) => {
@@ -100,7 +83,7 @@ const Register = () => {
                                         component={TextField}
                                         name="passwordCheck"
                                         type="password"
-                                        label="Password again"
+                                        label="Confirm password"
                                     />
                                 </FormGroup>
                                 <FormGroup className="form-group-spaced">

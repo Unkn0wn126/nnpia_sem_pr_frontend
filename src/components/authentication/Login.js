@@ -7,10 +7,16 @@ import Container from '@mui/material/Container';
 import { Alert, Avatar, Button, FormGroup, LinearProgress, CardHeader } from "@mui/material";
 import { Formik, Form, Field } from "formik";
 import { TextField } from 'formik-mui';
+import * as Yup from "yup";
 
 const Login = () => {
     let navigate = useNavigate();
     const [message, setMessage] = useState("");
+
+    const validationSchema = Yup.object({
+        username: Yup.string().required("Username is required"),
+        password: Yup.string().required("Password is required")
+    });
 
     return (
         <Container maxWidth="sm">
@@ -23,17 +29,7 @@ const Login = () => {
                             username: "",
                             password: ""
                         }}
-                        validate={(values) => {
-                            const errors = {};
-                            if (!values.username) {
-                                errors.username = 'Username is required'
-                            }
-                            if (!values.password) {
-                                errors.password = 'Password is required'
-                            }
-
-                            return errors;
-                        }}
+                        validationSchema={validationSchema}
                         validateOnChange={true}
                         validateOnBlur={true}
                         onSubmit={(data, { setSubmitting }) => {
