@@ -28,176 +28,174 @@ const Navbar = ({ currentUser, pages, settings }) => {
     const [anchorElUser, setAnchorElUser] = useState(null);
 
     return (
-        <nav>
-            <AppBar position="fixed" sx={{ height: "70px" }}>
-                <Container maxWidth="xl">
-                    <Toolbar disableGutters>
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="div"
-                            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+        <AppBar position="fixed" sx={{ height: "70px" }} component="nav">
+            <Container maxWidth="xl">
+                <Toolbar disableGutters>
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component="div"
+                        sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+                    >
+                        Issue tracker
+                    </Typography>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleOpenNavMenu}
+                            color="inherit"
                         >
-                            Issue tracker
-                        </Typography>
-                        <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                            <IconButton
-                                size="large"
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleOpenNavMenu}
-                                color="inherit"
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorElNav}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'left'
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'left'
-                                }}
-                                open={Boolean(anchorElNav)}
-                                onClose={handleCloseNavMenu}
-                                sx={{
-                                    display: { xs: 'block', md: 'none' }
-                                }}
-                            >
-                                <Search>
-                                    <SearchIconWrapper>
-                                        <SearchIcon />
-                                    </SearchIconWrapper>
-                                    <StyledInputBase
-                                        placeholder="Search..."
-                                        inputProps={{ 'aria-label': 'search' }}
-                                    />
-
-                                </Search>
-                                {pages.map((page) => (
-                                    <Link key={page.text} component={RouterLink} to={page.link} textAlign="center" underline="none">
-                                        <MenuItem onClick={handleCloseNavMenu}>
-                                            {page.text}
-                                        </MenuItem>
-                                    </Link>
-                                ))}
-                                {!currentUser && (
-                                    <div>
-                                        <Link component={RouterLink} to={"/login"} textAlign="center" underline="none">
-                                            <MenuItem
-                                                onClick={handleCloseNavMenu}
-                                            >
-                                                Login
-                                            </MenuItem>
-                                        </Link>
-                                        <Link component={RouterLink} to={"/register"} textAlign="center" underline="none">
-                                            <MenuItem
-                                                onClick={handleCloseNavMenu}
-                                            >
-                                                Register
-                                            </MenuItem>
-                                        </Link>
-                                    </div>
-                                )}
-
-                            </Menu>
-                        </Box>
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="div"
-                            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+                            <MenuIcon />
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorElNav}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'left'
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left'
+                            }}
+                            open={Boolean(anchorElNav)}
+                            onClose={handleCloseNavMenu}
+                            sx={{
+                                display: { xs: 'block', md: 'none' }
+                            }}
                         >
-                            Issue tracker
-                        </Typography>
-                        <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: '10px' }}>
-                            {pages.map((page) => (
-                                <Link
-                                    component={RouterLink}
-                                    key={page.text}
-                                    onClick={handleCloseNavMenu}
-                                    sx={{ my: 2, color: '#ffffff', display: 'block' }}
-                                    variant="button"
-                                    underline='none'
-                                    to={page.link}
-                                >
-                                    {page.text}
-                                </Link>
-                            ))}
                             <Search>
                                 <SearchIconWrapper>
                                     <SearchIcon />
                                 </SearchIconWrapper>
                                 <StyledInputBase
-                                    placeholder="Search ..."
+                                    placeholder="Search..."
                                     inputProps={{ 'aria-label': 'search' }}
                                 />
+
                             </Search>
-                        </Toolbar>
-                        {currentUser && (
-                            <Box sx={{ flexGrow: 0 }}>
-                                <Tooltip title="Open settings">
-                                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                        <Avatar alt={currentUser.sub} src="/static/images/avatar/2.jpg" />
-                                    </IconButton>
-                                </Tooltip>
-                                <Menu
-                                    sx={{ mt: '45px' }}
-                                    id="menu-appbar"
-                                    anchorEl={anchorElUser}
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                    keepMounted
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                    open={Boolean(anchorElUser)}
-                                    onClose={handleCloseUserMenu}
-                                >
-                                    {settings.map((setting) => (
-                                        <Link key={setting.text} component={RouterLink} to={setting.link} textAlign="center" underline="none" onClick={setting.onClick}>
-                                            <MenuItem onClick={handleCloseUserMenu}>
-                                                {setting.text}
-                                            </MenuItem>
-                                        </Link>
-                                    ))}
-                                </Menu>
-                            </Box>
-                        )}
-                        {!currentUser && (
-                            <Box sx={{ flexGrow: 0 }}>
-                                <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: '10px' }}>
-                                    <Link component={RouterLink} to={"/login"}
-                                        onClick={handleCloseNavMenu}
-                                        sx={{ my: 2, color: '#ffffff', display: 'block', borderRadius: "7px", outline: "2px solid", padding: "7px" }}
-                                        variant="button"
-                                        underline='none'
-                                    >
-                                        LOGIN
+                            {pages.map((page) => (
+                                <Link key={page.text} component={RouterLink} to={page.link} textAlign="center" underline="none">
+                                    <MenuItem onClick={handleCloseNavMenu}>
+                                        {page.text}
+                                    </MenuItem>
+                                </Link>
+                            ))}
+                            {!currentUser && (
+                                <div>
+                                    <Link component={RouterLink} to={"/login"} textAlign="center" underline="none">
+                                        <MenuItem
+                                            onClick={handleCloseNavMenu}
+                                        >
+                                            Login
+                                        </MenuItem>
                                     </Link>
-                                    <Link component={RouterLink} to={"/register"}
-                                        onClick={handleCloseNavMenu}
-                                        sx={{ my: 2, color: '#ffffff', display: 'block' }}
-                                        variant="button"
-                                        underline='none'
-                                    >
-                                        REGISTER
+                                    <Link component={RouterLink} to={"/register"} textAlign="center" underline="none">
+                                        <MenuItem
+                                            onClick={handleCloseNavMenu}
+                                        >
+                                            Register
+                                        </MenuItem>
                                     </Link>
-                                </Toolbar>
-                            </Box>
-                        )}
+                                </div>
+                            )}
+
+                        </Menu>
+                    </Box>
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component="div"
+                        sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+                    >
+                        Issue tracker
+                    </Typography>
+                    <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: '10px' }}>
+                        {pages.map((page) => (
+                            <Link
+                                component={RouterLink}
+                                key={page.text}
+                                onClick={handleCloseNavMenu}
+                                sx={{ my: 2, color: '#ffffff', display: 'block' }}
+                                variant="button"
+                                underline='none'
+                                to={page.link}
+                            >
+                                {page.text}
+                            </Link>
+                        ))}
+                        <Search>
+                            <SearchIconWrapper>
+                                <SearchIcon />
+                            </SearchIconWrapper>
+                            <StyledInputBase
+                                placeholder="Search ..."
+                                inputProps={{ 'aria-label': 'search' }}
+                            />
+                        </Search>
                     </Toolbar>
-                </Container>
-            </AppBar>
-        </nav>
+                    {currentUser && (
+                        <Box sx={{ flexGrow: 0 }}>
+                            <Tooltip title="Open settings">
+                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                    <Avatar alt={currentUser.sub} src="/static/images/avatar/2.jpg" />
+                                </IconButton>
+                            </Tooltip>
+                            <Menu
+                                sx={{ mt: '45px' }}
+                                id="menu-appbar"
+                                anchorEl={anchorElUser}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorElUser)}
+                                onClose={handleCloseUserMenu}
+                            >
+                                {settings.map((setting) => (
+                                    <Link key={setting.text} component={RouterLink} to={setting.link} textAlign="center" underline="none" onClick={setting.onClick}>
+                                        <MenuItem onClick={handleCloseUserMenu}>
+                                            {setting.text}
+                                        </MenuItem>
+                                    </Link>
+                                ))}
+                            </Menu>
+                        </Box>
+                    )}
+                    {!currentUser && (
+                        <Box sx={{ flexGrow: 0 }}>
+                            <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: '10px' }}>
+                                <Link component={RouterLink} to={"/login"}
+                                    onClick={handleCloseNavMenu}
+                                    sx={{ my: 2, color: '#ffffff', display: 'block', borderRadius: "7px", outline: "2px solid", padding: "7px" }}
+                                    variant="button"
+                                    underline='none'
+                                >
+                                    LOGIN
+                                </Link>
+                                <Link component={RouterLink} to={"/register"}
+                                    onClick={handleCloseNavMenu}
+                                    sx={{ my: 2, color: '#ffffff', display: 'block' }}
+                                    variant="button"
+                                    underline='none'
+                                >
+                                    REGISTER
+                                </Link>
+                            </Toolbar>
+                        </Box>
+                    )}
+                </Toolbar>
+            </Container>
+        </AppBar>
     );
 }
 

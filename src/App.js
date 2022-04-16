@@ -12,6 +12,7 @@ import { UserContext } from './providers/UserContext'
 import IssueDashboard from './pages/issues/IssueDashboard';
 import IssueDetailPage from './pages/issues/IssueDetailPage';
 import ProfileDetailPage from './pages/profiles/ProfileDetailPage'
+import HomePage from './pages/HomePage';
 
 function App() {
   //IssueService.getAllPublicIssues().then(data => console.log(data));
@@ -55,10 +56,10 @@ function App() {
       <Navbar currentUser={user} pages={user? authenticatedPages : publicPages} settings={settings} />
       <div className='container'>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Login />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Login />} />
+          <Route path="/logout" element={<HomePage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/users" element={<Register />} />
           <Route path="/users/:username" element={<ProfileDetailPage />} />
