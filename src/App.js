@@ -7,6 +7,7 @@ import IssueService from './services/issue.service';
 import AuthService from './services/auth.service';
 import Login from './components/authentication/Login';
 import Register from './components/authentication/Register';
+import Navbar from './components/nav/Navbar';
 
 function App() {
   //IssueService.getAllPublicIssues().then(data => console.log(data));
@@ -27,7 +28,23 @@ function App() {
 
   return (
     <div>
-      <Register></Register>
+    <Navbar></Navbar>
+      <Routes>
+        <Route path="/" element={<Login/>} />
+        <Route path="/home" element={<Login/>} />
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/register" element={<Register/>}/>
+        <Route path="/users" element={<Register/>}/>
+        <Route path="/users/:username" element={<Register/>}/>
+        <Route path="/issues" element={<Register/>}/>
+        <Route path="/issues/:issueId" element={<Register/>}/>
+        <Route path="/admin/issues" element={<Register/>}/>
+        <Route path="/admin/issues/:issueId" element={<Register/>}/>
+        <Route path="/admin/users" element={<Register/>}/>
+        <Route path="/admin/users/:username" element={<Register/>}/>
+        <Route path="/admin/comments" element={<Register/>}/>
+        <Route path="/admin/comments/:commentId" element={<Register/>}/>
+      </Routes>
     </div>
   )
 }
