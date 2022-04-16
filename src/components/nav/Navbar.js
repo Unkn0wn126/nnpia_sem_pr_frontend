@@ -1,4 +1,4 @@
-import { AppBar, Box, Container, IconButton, Toolbar, Typography, Menu, MenuItem, Button, Tooltip, Avatar, Link } from "@mui/material";
+import { AppBar, Box, Container, IconButton, Toolbar, Typography, Menu, MenuItem, Button, Tooltip, Avatar, Link, Divider } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from "react";
@@ -116,6 +116,7 @@ const Navbar = ({ currentUser, pages, settings }) => {
                     </Typography>
                     <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: '10px' }}>
                         {pages.map((page) => (
+                            <>
                             <Link
                                 component={RouterLink}
                                 key={page.text}
@@ -127,6 +128,8 @@ const Navbar = ({ currentUser, pages, settings }) => {
                             >
                                 {page.text}
                             </Link>
+                            <Divider orientation="vertical" variant="middle" />
+                            </>
                         ))}
                         <Search>
                             <SearchIconWrapper>

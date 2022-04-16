@@ -5,7 +5,7 @@ import { Routes, Route, Link as RouterLink, useParams, Navigate } from "react-ro
 import { Box, CircularProgress, Container, Grid, Pagination, Stack } from '@mui/material';
 import IssueList from '../../components/issues/IssueList';
 import IssueDetail from '../../components/issues/IssueDetail';
-import ProfileDetail from '../../components/profiles/ProfileDetail';
+import UserDetail from '../../components/profiles/UserDetail';
 
 const ProfileDetailPage = (props) => {
     const {user} = useContext(UserContext);
@@ -29,7 +29,7 @@ const ProfileDetailPage = (props) => {
         if(user){
             fetchIssue(params.username);
         }
-    }, [])
+    }, [params])
 
     if(!user){
         return <Navigate replace to="/login" />
@@ -42,7 +42,7 @@ const ProfileDetailPage = (props) => {
                     <CircularProgress />
                 )}
                 {viewedUser && (
-                    <ProfileDetail displayedUser={viewedUser} />
+                    <UserDetail displayedUser={viewedUser} />
                 )
                 }
             </Box>

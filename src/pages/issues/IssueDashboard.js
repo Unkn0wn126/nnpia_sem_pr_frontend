@@ -1,8 +1,9 @@
 import { UserContext } from '../../providers/UserContext'
 import React, { createContext, useContext, useEffect, useState } from "react";
 import IssueService from '../../services/issue.service';
-import { Box, CircularProgress, Container, Grid, Pagination, Stack } from '@mui/material';
+import { Box, CircularProgress, Container, Grid, Pagination, Stack, Typography } from '@mui/material';
 import IssueList from '../../components/issues/IssueList';
+import IssuePagination from '../../components/issues/IssuePagination';
 
 const IssueDashboard = (props) => {
     const {user} = useContext(UserContext);
@@ -42,18 +43,7 @@ const IssueDashboard = (props) => {
     return (
         <Container maxWidth="md">
             <Box sx={{paddingTop:"30px", paddingBottom: "20px"}}>
-                {isLoading && (
-                    <CircularProgress />
-                )}
-                {issues && (
-                    <Stack spacing={4} alignItems="stretch" justifyContent="flex-end">
-                        <IssueList issueList={issues.issues} />
-                        <Box sx={{display: "flex", alignItems:"center", justifyContent:"center"}}>
-                            <Pagination count={issues.totalPages} page={page} onChange={handlePageChange} color="primary"/>
-                        </Box>
-                    </Stack>
-                )
-                }
+                <IssuePagination issues={issues} page={page} handlePageChange={handlePageChange} isLoadingIssues={isLoading} />
             </Box>
         </Container>
     );

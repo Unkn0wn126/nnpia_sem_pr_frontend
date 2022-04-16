@@ -7,7 +7,7 @@ const HomePage = (props) => {
     const { user } = useContext(UserContext);
 
     if (user) {
-        return <Navigate replace to={`/users/${user.sub}`} />
+        return <Navigate replace to={`/users/${user.username}`} />
     }
 
     return (
@@ -16,7 +16,7 @@ const HomePage = (props) => {
                 <Card>
                     <CardContent>
                         <Typography variant='h1' component="h1">
-                            Issue tracker
+                            Unknown's Issue tracker
                         </Typography>
                     </CardContent>
                 </Card>

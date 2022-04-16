@@ -11,10 +11,9 @@ const login = (loginRequest) => {
     .post(`${process.env.REACT_APP_BASE_URI}/api/v1/login`, loginRequest)
     .then((response) => {
         if(response.data.jwttoken && response.data.refreshToken){
-            let decoded = jwt_decode(response.data.jwttoken);
-            localStorage.setItem("user", JSON.stringify({ sub: decoded.sub, roles: decoded.roles }))
-            localStorage.setItem("jwttoken", JSON.stringify(response.data.jwttoken))
-            localStorage.setItem("refreshToken", JSON.stringify(response.data.refreshToken))
+            localStorage.setItem("user", JSON.stringify( response.data.userGetDto ));
+            localStorage.setItem("jwttoken", JSON.stringify(response.data.jwttoken));
+            localStorage.setItem("refreshToken", JSON.stringify(response.data.refreshToken));
         }
     })
 }

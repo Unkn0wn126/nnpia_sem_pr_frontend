@@ -45,7 +45,7 @@ function App() {
   ];
 
   const settings = [
-    { text: 'Profile', link: `/users/${user && user.sub}`, onClick: null },
+    { text: 'Profile', link: `/users/${user && user.username}`, onClick: null },
     { text: 'Account', link: '/account', onClick: null },
     { text: 'Dashboard', link: '/dashboard', onClick: null },
     { text: 'Logout', link: '/logout', onClick: logout }
