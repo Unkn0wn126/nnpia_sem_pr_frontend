@@ -43,7 +43,7 @@ const IssueDetailPage = (props) => {
                     <CircularProgress />
                 )}
                 {issue && (
-                    <IssueDetail issue={issue} />
+                    <IssueDetail issue={issue} viewingUser={user} />
                 )
                 }
             </Box>

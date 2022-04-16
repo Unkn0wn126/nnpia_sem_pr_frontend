@@ -7,7 +7,7 @@ import IssueService from '../../services/issue.service';
 import CommentCreate from "../comments/CommentCreate";
 import CommentService from "../../services/comment.service";
 
-const IssueDetail = ({ issue }) => {
+const IssueDetail = ({ issue, viewingUser }) => {
     const [comments, setComments] = useState([]);
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +28,10 @@ const IssueDetail = ({ issue }) => {
         fetchComments(page - 1);
     }, []);
     const handleCommentSubmit = () => {
+        fetchComments(page - 1);
+    }
+
+    const handleCommentDelete = () => {
         fetchComments(page - 1);
     }
     return (
@@ -63,7 +67,7 @@ const IssueDetail = ({ issue }) => {
                     <CircularProgress />
                 )}
                 {comments && (
-                    <CommentList commentList={comments} />
+                    <CommentList commentList={comments} viewingUser={viewingUser} onCommentSubmit={handleCommentSubmit} onCommentDelete={handleCommentDelete} />
                 )}
             </CardContent>
         </Card>

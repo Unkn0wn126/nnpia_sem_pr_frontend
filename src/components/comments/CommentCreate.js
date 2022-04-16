@@ -6,7 +6,7 @@ import { TextField } from 'formik-mui';
 import CommentService from "../../services/comment.service";
 import * as Yup from "yup";
 
-const CommentCreate = ({ issue, onCommentSubmit }) => {
+const CommentCreate = ({ issue, onCommentSubmit, comment }) => {
     const [message, setMessage] = useState("");
 
     const validationSchema = Yup.object({
@@ -17,14 +17,16 @@ const CommentCreate = ({ issue, onCommentSubmit }) => {
             <CardContent>
                 <Formik
                     initialValues={{
-                        content: ""
+                        content: comment ? comment.content : ""
                     }}
                     validationSchema={validationSchema}
                     validateOnChange={true}
                     validateOnBlur={true}
                     onSubmit={(data, { setSubmitting }) => {
                         setMessage("");
-                        CommentService.createComment(issue.id, data).then(
+                        if(comment){
+                            console.log(data);
+                            CommentService.updateComment(comment.id, data).then(
                             () => {
                                 setSubmitting(false);
                                 onCommentSubmit();
@@ -41,6 +43,26 @@ const CommentCreate = ({ issue, onCommentSubmit }) => {
                                 setSubmitting(false);
                             }
                         )
+                        }else{
+                            CommentService.createComment(issue.id, data).then(
+                            () => {
+                                setSubmitting(false);
+                                onCommentSubmit();
+                                data.content = '';
+                            },
+                            (error) => {
+                                const resMessage =
+                                    (error.response &&
+                                        error.response.data &&
+                                        error.response.data.message) ||
+                                    error.message ||
+                                    error.toString();
+                                setMessage(resMessage);
+                                setSubmitting(false);
+                            }
+                        )
+                        }
+
                     }}>
                     {({ submitForm, isSubmitting }) => (
                         <Form>
