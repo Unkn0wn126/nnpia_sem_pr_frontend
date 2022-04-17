@@ -5,6 +5,8 @@ import { Box, CircularProgress, Container, Grid, Pagination, Stack, Typography }
 import { Routes, Route, Link as RouterLink, useParams, useLocation, useNavigate } from "react-router-dom";
 import IssueList from '../../components/issues/IssueList';
 import IssuePagination from '../../components/issues/IssuePagination';
+import CommentService from '../../services/comment.service';
+import CommentPagination from '../../components/comments/CommentPagination';
 
 function useQuery() {
     const { search } = useLocation();
@@ -12,23 +14,23 @@ function useQuery() {
     return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-const IssueDashboard = (props) => {
+const CommentDashboard = (props) => {
     const { user } = useContext(UserContext);
     const history = useNavigate();
     const query = useQuery();
-    const [issues, setIssues] = useState(undefined);
+    const [comments, setComments] = useState(undefined);
     const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState((query.get("page") && query.get("page") >= 1) ? parseInt(query.get("page")) : 1);
     const handlePageChange = (event, value) => {
         setPage(value);
-        history(`/issues?page=${value}`);
+        history(`/comments?page=${value}`);
         fetchIssues(value - 1);
     }
 
     const fetchIssues = (pageNumber) => {
         setIsLoading(true);
-        IssueService.getAllIssues(pageNumber).then((data) => {
-            setIssues(data.data);
+        CommentService.getAllComments(pageNumber).then((data) => {
+            setComments(data.data);
         }).catch(err => {
 
         }).finally(() => {
@@ -40,6 +42,10 @@ const IssueDashboard = (props) => {
         fetchIssues(page - 1);
     }
 
+    const handleCommentSubmit = () => {
+        fetchIssues(page - 1);
+    }
+
     useEffect(() => {
         fetchIssues(page - 1);
     }, [])
@@ -47,10 +53,10 @@ const IssueDashboard = (props) => {
     return (
         <Container maxWidth="md">
             <Box sx={{ paddingTop: "30px", paddingBottom: "20px" }}>
-                <IssuePagination issues={issues} viewingUser={user} page={page} handlePageChange={handlePageChange} onDelete={handleIssueDelete} isLoadingIssues={isLoading} />
+                <CommentPagination issue={null} comments={comments} viewingUser={user} page={page} handlePageChange={handlePageChange} onCommentDelete={handleIssueDelete} onCommentSubmit={handleCommentSubmit} isLoadingIssues={isLoading} />
             </Box>
         </Container>
     );
 }
 
-export default IssueDashboard;
+export default CommentDashboard;

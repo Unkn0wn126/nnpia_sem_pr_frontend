@@ -10,6 +10,7 @@ import Register from './pages/Register';
 import Navbar from './components/nav/Navbar';
 import { UserContext } from './providers/UserContext'
 import IssueDashboard from './pages/issues/IssueDashboard';
+import CommentDashboard from './pages/comments/CommentDashboard';
 import IssueDetailPage from './pages/issues/IssueDetailPage';
 import ProfileDetailPage from './pages/profiles/ProfileDetailPage'
 import HomePage from './pages/HomePage';
@@ -36,9 +37,9 @@ function App() {
 
   if(user){
     pages.push({ text: 'Create issue', link: '/issues/create' });
-    if(isAdmin){
+    /*if(isAdmin){
       settings.splice(2, 0, { text: 'Admin console', link: '/admin', onClick: null });
-    }
+    }*/
   }
 
   return (
@@ -54,17 +55,10 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/users" element={<Register />} />
           <Route path="/users/:username" element={<ProfileDetailPage />} />
+          <Route path="/comments" element={<CommentDashboard />} />
           <Route path="/issues" element={<IssueDashboard />} />
           <Route path="/issues/create" element={<IssueCreatePage />} />
           <Route path="/issues/:issueId" element={<IssueDetailPage />} />
-          <Route path="/admin" element={<Register />} />
-          <Route path="/admin/issues?page=:page" element={<Register />} />
-          <Route path="/admin/issues/create" element={<Register />} />
-          <Route path="/admin/issues/:issueId" element={<IssueDetailPage />} />
-          <Route path="/admin/users" element={<Register />} />
-          <Route path="/admin/users/:username" element={<ProfileDetailPage />} />
-          <Route path="/admin/comments" element={<Register />} />
-          <Route path="/admin/comments/:commentId" element={<Register />} />
         </Routes>
       </div>
     </div>

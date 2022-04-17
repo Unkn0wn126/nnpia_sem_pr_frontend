@@ -7,29 +7,19 @@ import IssueList from '../../components/issues/IssueList';
 import IssueDetail from '../../components/issues/IssueDetail';
 
 const IssueDetailPage = (props) => {
-    const {user} = useContext(UserContext);
+    const { user } = useContext(UserContext);
     let params = useParams();
     const [issue, setIssue] = useState(undefined)
     const [isLoading, setIsLoading] = useState(true);
     const fetchIssue = (issueId) => {
         setIsLoading(true);
-        if(user){
-            IssueService.getIssueById(issueId).then((data) => {
-                setIssue(data.data);
-            }).catch(err => {
+        IssueService.getIssueById(issueId).then((data) => {
+            setIssue(data.data);
+        }).catch(err => {
 
-            }).finally(() => {
-                setIsLoading(false);
-            });
-        }else{
-            IssueService.getPublicIssueById(issueId).then((data) => {
-                setIssue(data.data);
-            }).catch(err => {
-
-            }).finally(() => {
-                setIsLoading(false);
-            });
-        }
+        }).finally(() => {
+            setIsLoading(false);
+        });
     }
 
     useEffect(() => {
@@ -38,7 +28,7 @@ const IssueDetailPage = (props) => {
 
     return (
         <Container maxWidth="md">
-            <Box sx={{paddingTop:"30px", paddingBottom: "20px"}}>
+            <Box sx={{ paddingTop: "30px", paddingBottom: "20px" }}>
                 {isLoading && (
                     <CircularProgress />
                 )}
