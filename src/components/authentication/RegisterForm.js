@@ -121,7 +121,6 @@ const RegisterForm = (props) => {
                                 >
                                     Register
                                 </Button>
-                                <input type="submit" hidden/>
                             </FormGroup>
                             {message && (
                                 <FormGroup className="form-group-spaced">
