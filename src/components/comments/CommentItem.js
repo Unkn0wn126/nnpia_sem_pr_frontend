@@ -41,6 +41,7 @@ const CommentItem = ({ issue, comment, viewingUser, onDelete }) => {
                     divider={<Divider orientation="horizontal" flexItem />}
                     alignItems="stretch"
                     justifyContent="space-evenly"
+                    spacing={2}
                 >
                     {(viewingUser && viewedComment.author.username === viewingUser.username) && (<Stack
                         spacing={{ xs: 1, sm: 2, md: 4 }}
@@ -48,10 +49,10 @@ const CommentItem = ({ issue, comment, viewingUser, onDelete }) => {
                         alignItems="stretch"
                         justifyContent="flex-start"
                     >
-                        <Button onClick={handleEdit}>
+                        <Button onClick={handleEdit} variant="contained">
                             Edit
                         </Button>
-                        <Button onClick={handleDelete}>
+                        <Button onClick={handleDelete} variant="contained" color="error">
                             Delete
                         </Button>
                     </Stack>
