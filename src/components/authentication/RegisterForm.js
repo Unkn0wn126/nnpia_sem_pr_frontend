@@ -4,10 +4,49 @@ import AuthService from "../../services/auth.service";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Container from '@mui/material/Container';
-import { Alert, Avatar, Button, FormGroup, LinearProgress, CardHeader } from "@mui/material";
+import { Alert, Avatar, Button, FormGroup, LinearProgress, CardHeader, Tooltip, Typography, IconButton, Stack } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Formik, Form, Field } from "formik";
 import { TextField } from 'formik-mui';
 import * as Yup from "yup";
+import { useDropzone } from 'react-dropzone';
+
+const UploadComponent = ({ field, form, ...other }) => {
+    const currentError = form.errors[field.name];
+    const [imageURL, setImageURL] = useState([]);
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        accept: "image/*",
+        onDrop: acceptedFiles => {
+            const newImageUrl = [];
+            newImageUrl.push(URL.createObjectURL(acceptedFiles[0]));
+            setImageURL(newImageUrl);
+            form.setFieldValue("profilePicture", btoa(newImageUrl));
+        }
+    });
+
+    return (
+        <Stack alignItems="center">
+            {field.value && (
+                <Tooltip title="Remove image">
+                    <IconButton onClick={() => {
+                        form.setFieldValue("profilePicture", null);
+                        setImageURL([]);
+                    }}>
+                        <DeleteIcon />
+                    </IconButton>
+                </Tooltip>
+            )}
+            <Tooltip title="Upload image">
+                <div {...getRootProps({ className: 'dropzone' })}>
+                    <input {...getInputProps()} />
+                    <Avatar className="content-center form-group-spaced" src={imageURL[0]} sx={{ width: 100, height: 100 }} />
+                    <Typography variant="body1" sx={{ textAlign: "center" }}>Upload image</Typography>
+
+                </div>
+            </Tooltip>
+        </Stack>
+    )
+}
 
 const RegisterForm = (props) => {
     let navigate = useNavigate();
@@ -19,7 +58,7 @@ const RegisterForm = (props) => {
         passwordCheck: Yup.string().required('Confirm password is required').oneOf([Yup.ref('password')], 'Passwords must match'),
         email: Yup.string().email().required('Email is required'),
         nickname: Yup.string().required('Nickname is required'),
-        profilePicturePath: Yup.string().nullable()
+        profilePicture: Yup.mixed().nullable()
     })
 
     return (
@@ -27,7 +66,6 @@ const RegisterForm = (props) => {
         <Card variant="outlined">
             <CardContent>
                 <CardHeader className="content-center text-center" component="h3" title="Register" />
-                <Avatar className="content-center form-group-spaced" src="logo.svg" sx={{ width: 100, height: 100 }} />
                 <Formik
                     initialValues={{
                         username: "",
@@ -35,14 +73,15 @@ const RegisterForm = (props) => {
                         passwordCheck: "",
                         email: "",
                         nickname: "",
-                        profilePicturePath: ""
+                        profilePicture: null
                     }}
                     validationSchema={validationSchema}
                     validateOnChange={true}
                     validateOnBlur={true}
                     onSubmit={(data, { setSubmitting }) => {
                         setMessage("");
-                        AuthService.register({ email: data.email, password: data.password, profile: { nickname: data.nickname, profilePicturePath: data.profilePicturePath }, username: data.username }).then(
+                        console.log(data);
+                        AuthService.register({ email: data.email, password: data.password, profile: { nickname: data.nickname, profilePicturePath: data.profilePicture }, username: data.username }).then(
                             () => {
                                 navigate("/profile");
                                 window.location.reload();
@@ -62,6 +101,16 @@ const RegisterForm = (props) => {
                     }}>
                     {({ submitForm, isSubmitting }) => (
                         <Form>
+                            <FormGroup className="form-group-spaced">
+
+                                <Field
+                                    component={UploadComponent}
+                                    formHelperText={{ children: 'How visible do you want the issue to be?' }}
+                                    name="profilePicture"
+                                    label="Profile picture"
+                                >
+                                </Field>
+                            </FormGroup>
                             <FormGroup className="form-group-spaced">
                                 <Field
                                     component={TextField}
@@ -100,14 +149,6 @@ const RegisterForm = (props) => {
                                     name="nickname"
                                     type="text"
                                     label="Nickname"
-                                />
-                            </FormGroup>
-                            <FormGroup className="form-group-spaced">
-                                <Field
-                                    component={TextField}
-                                    name="profilePicturePath"
-                                    type="text"
-                                    label="Profile picture path"
                                 />
                             </FormGroup>
 
