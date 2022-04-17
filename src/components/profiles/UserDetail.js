@@ -8,6 +8,8 @@ import IssueService from '../../services/issue.service';
 import IssueList from '../issues/IssueList';
 import IssuePagination from "../issues/IssuePagination";
 import ProfileDetail from "./ProfileDetail";
+import CommentPagination from "../comments/CommentPagination";
+import CommentService from "../../services/comment.service";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -35,19 +37,27 @@ TabPanel.propTypes = {
     value: PropTypes.number.isRequired,
 };
 
-const UserDetail = ({ displayedUser }) => {
+const UserDetail = ({ displayedUser, viewingUser }) => {
     const [value, setValue] = useState(0);
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
     const [issues, setIssues] = useState(undefined);
     const [isLoadingIssues, setisLoadingIssues] = useState(true);
-    const [isLoadingComments, setisLoadingComments] = useState(true);
     const [issuePage, setIssuePage] = useState(1);
+
+    const [comments, setComments] = useState(undefined);
+    const [isLoadingComments, setisLoadingComments] = useState(true);
+    const [commentPage, setCommentPage] = useState(1);
 
     const handleIssuePageChange = (event, value) => {
         setIssuePage(value);
         fetchIssues(value - 1);
+    }
+
+    const handleCommentPageChange = (event, value) => {
+        setCommentPage(value);
+        fetchComments(value - 1);
     }
 
 
@@ -55,14 +65,43 @@ const UserDetail = ({ displayedUser }) => {
         setisLoadingIssues(true);
         IssueService.getIssuesByAuthorName(displayedUser.username, pageNumber).then((data) => {
             setIssues(data.data);
+            if(data.data.totalPages <= data.data.currentPage && data.data.currentPage > 0){
+                setIssuePage((previous) => previous - 1);
+                fetchIssues(data.data.currentPage - 1);
+            }
         }).catch(err => {
         }).finally(() => {
             setisLoadingIssues(false);
         });
     }
+
+    const fetchComments = (pageNumber) => {
+        setisLoadingComments(true);
+        CommentService.getCommentsByAuthorName(displayedUser.username, pageNumber).then((data) => {
+            setComments(data.data);
+            if(data.data.totalPages <= data.data.currentPage && data.data.currentPage > 0){
+                setCommentPage((previous) => previous - 1);
+                fetchComments(data.data.currentPage - 1);
+            }
+        }).catch(err => {
+        }).finally(() => {
+            setisLoadingComments(false);
+        });
+    }
+
+    const handleCommentSubmit = () => {
+        fetchComments(commentPage - 1);
+    }
+
+    const handleCommentDelete = () => {
+        fetchComments(commentPage - 1);
+    }
+
     useEffect(() => {
         if (value === 1) {
             fetchIssues(issuePage - 1);
+        } else if (value === 2) {
+            fetchComments(commentPage - 1);
         }
     }, [value]);
 
@@ -97,7 +136,15 @@ const UserDetail = ({ displayedUser }) => {
                         <IssuePagination issues={issues} page={issuePage} handlePageChange={handleIssuePageChange} isLoadingIssues={isLoadingIssues} />
                     </TabPanel>
                     <TabPanel value={value} index={2}>
-
+                        <CommentPagination
+                            issue={null}
+                            comments={comments}
+                            viewingUser={viewingUser}
+                            onCommentSubmit={handleCommentSubmit}
+                            onCommentDelete={handleCommentDelete}
+                            page={commentPage}
+                            handlePageChange={handleCommentPageChange}
+                            isLoadingComments={isLoadingComments} />
                     </TabPanel>
                 </Stack>
             </CardContent>

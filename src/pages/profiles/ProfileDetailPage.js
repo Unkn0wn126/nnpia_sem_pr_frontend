@@ -42,7 +42,7 @@ const ProfileDetailPage = (props) => {
                     <CircularProgress />
                 )}
                 {viewedUser && (
-                    <UserDetail displayedUser={viewedUser} />
+                    <UserDetail displayedUser={viewedUser} viewingUser={user}/>
                 )
                 }
             </Box>
