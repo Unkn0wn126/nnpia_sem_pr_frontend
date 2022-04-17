@@ -9,32 +9,7 @@ import { TextField, Select } from 'formik-mui';
 import CommentService from "../../services/comment.service";
 import * as Yup from "yup";
 import IssueService from "../../services/issue.service";
-
-const DatePickerEditor = ({ field, form, ...other }) => {
-    const currentError = form.errors[field.name];
-    return (
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-                clearable
-                disablePast
-                name={field.name}
-                value={field.value}
-                error={Boolean(currentError)}
-                inputFormat="yyyy-MM-dd"
-                onError={error => {
-                    if (error !== currentError)
-                        form.setFieldError(field.name, error);
-                }}
-                onChange={(newValue) => {
-                    console.log(newValue);
-                    form.setFieldValue(field.name, newValue, true);
-                }}
-                {...other}
-                renderInput={(params) => <MUITextField {...params} />}
-            />
-        </LocalizationProvider>
-    )
-}
+import DatePickerEditor from "../helpers/DatePickerEditor";
 
 const IssueCreate = ({ issue, onIssueSubmit }) => {
     const [message, setMessage] = useState("");

@@ -10,7 +10,7 @@ const Login = (props) => {
         return <Navigate replace to="/profile" />
     }
     return (        
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" sx={{ paddingTop: "30px", paddingBottom: "20px" }}>
         <RegisterForm />
     </Container>);
 }

@@ -10,43 +10,8 @@ import { Formik, Form, Field } from "formik";
 import { TextField } from 'formik-mui';
 import * as Yup from "yup";
 import { useDropzone } from 'react-dropzone';
+import UploadComponent from '../helpers/UploadComponent';
 
-const UploadComponent = ({ field, form, ...other }) => {
-    const currentError = form.errors[field.name];
-    const [imageURL, setImageURL] = useState([]);
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        accept: "image/*",
-        onDrop: acceptedFiles => {
-            const newImageUrl = [];
-            newImageUrl.push(URL.createObjectURL(acceptedFiles[0]));
-            setImageURL(newImageUrl);
-            form.setFieldValue("profilePicture", btoa(newImageUrl));
-        }
-    });
-
-    return (
-        <Stack alignItems="center">
-            {field.value && (
-                <Tooltip title="Remove image">
-                    <IconButton onClick={() => {
-                        form.setFieldValue("profilePicture", null);
-                        setImageURL([]);
-                    }}>
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
-            )}
-            <Tooltip title="Upload image">
-                <div {...getRootProps({ className: 'dropzone' })}>
-                    <input {...getInputProps()} />
-                    <Avatar className="content-center form-group-spaced" src={imageURL[0]} sx={{ width: 100, height: 100 }} />
-                    <Typography variant="body1" sx={{ textAlign: "center" }}>Upload image</Typography>
-
-                </div>
-            </Tooltip>
-        </Stack>
-    )
-}
 
 const RegisterForm = (props) => {
     let navigate = useNavigate();
