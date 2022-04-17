@@ -13,6 +13,7 @@ import IssueDashboard from './pages/issues/IssueDashboard';
 import IssueDetailPage from './pages/issues/IssueDetailPage';
 import ProfileDetailPage from './pages/profiles/ProfileDetailPage'
 import HomePage from './pages/HomePage';
+import IssueCreatePage from './pages/issues/IssueCreatePage';
 
 function App() {
   //IssueService.getAllPublicIssues().then(data => console.log(data));
@@ -64,7 +65,7 @@ function App() {
           <Route path="/users" element={<Register />} />
           <Route path="/users/:username" element={<ProfileDetailPage />} />
           <Route path="/issues" element={<IssueDashboard />} />
-          <Route path="/issues/create" element={<IssueDashboard />} />
+          <Route path="/issues/create" element={<IssueCreatePage />} />
           <Route path="/issues/:issueId" element={<IssueDetailPage />} />
           <Route path="/admin/issues?page=:page" element={<Register />} />
           <Route path="/admin/issues/create" element={<Register />} />
