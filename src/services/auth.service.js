@@ -28,6 +28,11 @@ const getCurrentUser = () => {
     return JSON.parse(localStorage.getItem("user"));
 }
 
+const isAdmin = () => {
+    const user = getCurrentUser();
+    return user && user.roles.filter(role => role.type === 'ROLE_ADMIN').length > 0;
+}
+
 const getJwtToken = () => {
     return JSON.parse(localStorage.getItem("jwttoken"));
 }
@@ -41,6 +46,7 @@ const AuthService = {
     login,
     logout,
     getCurrentUser,
+    isAdmin,
     getJwtToken,
     getRefreshToken
 }

@@ -7,6 +7,7 @@ export default UserContext;
 
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState(AuthService.getCurrentUser());
+    const [isAdmin, setIsAdmin] = useState(AuthService.isAdmin());
 
     const login = (loginRequest) => {
         return AuthService.login(loginRequest);
@@ -18,7 +19,7 @@ const UserProvider = ({ children }) => {
     }
 
     return (
-        <UserContext.Provider value={{user, login, logout }}>
+        <UserContext.Provider value={{isAdmin, user, login, logout }}>
             {children}
         </UserContext.Provider>
     );

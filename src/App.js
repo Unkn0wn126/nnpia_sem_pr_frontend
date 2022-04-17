@@ -14,51 +14,41 @@ import IssueDetailPage from './pages/issues/IssueDetailPage';
 import ProfileDetailPage from './pages/profiles/ProfileDetailPage'
 import HomePage from './pages/HomePage';
 import IssueCreatePage from './pages/issues/IssueCreatePage';
+import { CommentsDisabled } from '@mui/icons-material';
 
 function App() {
-  //IssueService.getAllPublicIssues().then(data => console.log(data));
-  // IssueService.getPublicIssuesByAuthorName("rando").then(data => console.log(data));
-  // IssueService.getPublicIssueById(1).then(data => console.log(data));
-  /*IssueService.getAllIssues()
-  .then(data => console.log(data))
-  .catch((error) => {
-    console.log(error)
-  });*/
-  // AuthService.login({username: "admin", password: "P4ssw0rd$"});
+  const { isAdmin, user, logout } = useContext(UserContext);
 
-  //IssueService.createIssue({content: "Some content", dueDate: null, header: "Posted from frontend!", severity: "LOW", visibility: "PUBLIC"});
-  // IssueService.deleteIssue(2);
-  //IssueService.updateIssue(1, {content: "Some content", dueDate: null, header: "Posted from frontend!", severity: "LOW", visibility: "INTERNAL", completionState: "IN_PROGRESS"});
-  // IssueService.createIssue({content: "Some content", dueDate: null, header: "Posted from frontend!", severity: "LOW", visibility: "PUBLIC"});
-  // AuthService.register({username: "newwuser", email: "neww@example.com", password: "P4ssw0rd$", profile: { nickname: "Neww user", profilePicturePath: null}});
-  const { user, logout } = useContext(UserContext);
-
-  const publicPages = [
-    { text: 'Home', link: '/home' },
-    { text: 'Issues', link: '/issues' }
-  ];
-
-
-  const authenticatedPages = [
+  const pages = [
     { text: 'Home', link: '/home' },
     { text: 'Issues', link: '/issues' },
-    { text: 'Create issue', link: '/issues/create' },
+    {text: 'Comments', link: '/comments'},
+    {text: 'Users', link: '/users'}
   ];
 
   const settings = [
     { text: 'Profile', link: `/users/${user && user.username}`, onClick: null },
-    { text: 'Account', link: '/account', onClick: null },
-    { text: 'Dashboard', link: '/dashboard', onClick: null },
+    { text: 'Edit profile', link: '/edit-account', onClick: null },
     { text: 'Logout', link: '/logout', onClick: logout }
   ];
 
+
+
+  if(user){
+    pages.push({ text: 'Create issue', link: '/issues/create' });
+    if(isAdmin){
+      settings.splice(2, 0, { text: 'Admin console', link: '/admin', onClick: null });
+    }
+  }
+
   return (
     <div>
-      <Navbar currentUser={user} pages={user? authenticatedPages : publicPages} settings={settings} />
+      <Navbar currentUser={user} pages={pages} settings={settings} />
       <div className='container'>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<HomePage />} />
+          <Route path="/edit-account" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<HomePage />} />
           <Route path="/register" element={<Register />} />
@@ -67,6 +57,7 @@ function App() {
           <Route path="/issues" element={<IssueDashboard />} />
           <Route path="/issues/create" element={<IssueCreatePage />} />
           <Route path="/issues/:issueId" element={<IssueDetailPage />} />
+          <Route path="/admin" element={<Register />} />
           <Route path="/admin/issues?page=:page" element={<Register />} />
           <Route path="/admin/issues/create" element={<Register />} />
           <Route path="/admin/issues/:issueId" element={<IssueDetailPage />} />
