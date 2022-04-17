@@ -8,41 +8,33 @@ import IssueDetail from '../../components/issues/IssueDetail';
 import UserDetail from '../../components/profiles/UserDetail';
 
 const ProfileDetailPage = (props) => {
-    const {user} = useContext(UserContext);
+    const { user } = useContext(UserContext);
     let params = useParams();
     const [viewedUser, setViewedUser] = useState(undefined)
     const [isLoading, setIsLoading] = useState(true);
     const fetchIssue = (username) => {
         setIsLoading(true);
-        if(user){
-            UserService.getUserByUsername(username).then((data) => {
-                setViewedUser(data.data);
-            }).catch(err => {
+        UserService.getUserByUsername(username).then((data) => {
+            setViewedUser(data.data);
+        }).catch(err => {
 
-            }).finally(() => {
-                setIsLoading(false);
-            });
-        }
+        }).finally(() => {
+            setIsLoading(false);
+        });
     }
 
     useEffect(() => {
-        if(user){
-            fetchIssue(params.username);
-        }
+        fetchIssue(params.username);
     }, [params])
-
-    if(!user){
-        return <Navigate replace to="/login" />
-    }
 
     return (
         <Container maxWidth="md">
-            <Box sx={{paddingTop:"30px", paddingBottom: "20px"}}>
+            <Box sx={{ paddingTop: "30px", paddingBottom: "20px" }}>
                 {isLoading && (
                     <CircularProgress />
                 )}
                 {viewedUser && (
-                    <UserDetail displayedUser={viewedUser} viewingUser={user}/>
+                    <UserDetail displayedUser={viewedUser} viewingUser={user} />
                 )
                 }
             </Box>

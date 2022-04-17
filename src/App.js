@@ -16,6 +16,7 @@ import ProfileDetailPage from './pages/profiles/ProfileDetailPage'
 import HomePage from './pages/HomePage';
 import IssueCreatePage from './pages/issues/IssueCreatePage';
 import { CommentsDisabled } from '@mui/icons-material';
+import ProfileDashboard from './pages/profiles/ProfileDashboard';
 
 function App() {
   const { isAdmin, user, logout } = useContext(UserContext);
@@ -53,7 +54,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<HomePage />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/users" element={<Register />} />
+          <Route path="/users" element={<ProfileDashboard />} />
           <Route path="/users/:username" element={<ProfileDetailPage />} />
           <Route path="/comments" element={<CommentDashboard />} />
           <Route path="/issues" element={<IssueDashboard />} />
