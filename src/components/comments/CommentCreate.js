@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Card, CardHeader, Avatar, CardContent, Typography, Link, Divider, FormGroup, LinearProgress, TextareaAutosize, Button, Alert } from "@mui/material"
+import { Card, CardHeader, Avatar, CardContent, Typography, Link, Divider, FormGroup, LinearProgress, TextareaAutosize, Button, Alert, Stack } from "@mui/material"
 import { Routes, Route, Link as RouterLink } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import { TextField } from 'formik-mui';
@@ -24,43 +24,43 @@ const CommentCreate = ({ issue, onCommentSubmit, comment }) => {
                     validateOnBlur={true}
                     onSubmit={(data, { setSubmitting }) => {
                         setMessage("");
-                        if(comment){
+                        if (comment) {
                             console.log(data);
                             CommentService.updateComment(comment.id, data).then(
-                            () => {
-                                setSubmitting(false);
-                                onCommentSubmit();
-                                data.content = '';
-                            },
-                            (error) => {
-                                const resMessage =
-                                    (error.response &&
-                                        error.response.data &&
-                                        error.response.data.message) ||
-                                    error.message ||
-                                    error.toString();
-                                setMessage(resMessage);
-                                setSubmitting(false);
-                            }
-                        )
-                        }else{
+                                () => {
+                                    setSubmitting(false);
+                                    onCommentSubmit();
+                                    data.content = '';
+                                },
+                                (error) => {
+                                    const resMessage =
+                                        (error.response &&
+                                            error.response.data &&
+                                            error.response.data.message) ||
+                                        error.message ||
+                                        error.toString();
+                                    setMessage(resMessage);
+                                    setSubmitting(false);
+                                }
+                            )
+                        } else {
                             CommentService.createComment(issue.id, data).then(
-                            () => {
-                                setSubmitting(false);
-                                onCommentSubmit();
-                                data.content = '';
-                            },
-                            (error) => {
-                                const resMessage =
-                                    (error.response &&
-                                        error.response.data &&
-                                        error.response.data.message) ||
-                                    error.message ||
-                                    error.toString();
-                                setMessage(resMessage);
-                                setSubmitting(false);
-                            }
-                        )
+                                () => {
+                                    setSubmitting(false);
+                                    onCommentSubmit();
+                                    data.content = '';
+                                },
+                                (error) => {
+                                    const resMessage =
+                                        (error.response &&
+                                            error.response.data &&
+                                            error.response.data.message) ||
+                                        error.message ||
+                                        error.toString();
+                                    setMessage(resMessage);
+                                    setSubmitting(false);
+                                }
+                            )
                         }
 
                     }}>
@@ -72,20 +72,38 @@ const CommentCreate = ({ issue, onCommentSubmit, comment }) => {
                                     name="content"
                                     type="text"
                                     label="Content"
-                                    style={{ maxWidth: "100%", minWidth: "100%", maxHeight: "150px", minHeight: "150px"}}
+                                    style={{ maxWidth: "100%", minWidth: "100%", maxHeight: "150px", minHeight: "150px" }}
                                     className="textarea-text"
                                 />
                             </FormGroup>
                             {isSubmitting && <LinearProgress className="form-group-spaced" />}
                             <FormGroup className="form-group-spaced">
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    disabled={isSubmitting}
-                                    onClick={submitForm}
+                                <Stack
+                                    direction="row"
+                                    alignItems="center"
+                                    justifyContent="flex-end"
+                                    spacing={4}
                                 >
-                                    Send
-                                </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        disabled={isSubmitting}
+                                        onClick={submitForm}
+                                    >
+                                        Send
+                                    </Button>
+                                    {comment && (
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            disabled={isSubmitting}
+                                            onClick={onCommentSubmit}
+                                        >
+                                            Cancel
+                                        </Button>
+                                    )}
+                                </Stack>
+
                                 <input type="submit" hidden />
                             </FormGroup>
                             {message && (

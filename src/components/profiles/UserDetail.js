@@ -97,6 +97,10 @@ const UserDetail = ({ displayedUser, viewingUser }) => {
         fetchComments(commentPage - 1);
     }
 
+    const handleIssueDelete = () => {
+        fetchIssues(issuePage - 1);
+    }
+
     useEffect(() => {
         if (value === 1) {
             fetchIssues(issuePage - 1);
@@ -133,7 +137,7 @@ const UserDetail = ({ displayedUser, viewingUser }) => {
                         <ProfileDetail displayedUser={displayedUser} />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        <IssuePagination issues={issues} page={issuePage} handlePageChange={handleIssuePageChange} isLoadingIssues={isLoadingIssues} />
+                        <IssuePagination viewingUser={viewingUser} issues={issues} page={issuePage} handlePageChange={handleIssuePageChange} onDelete={handleIssueDelete} isLoadingIssues={isLoadingIssues} />
                     </TabPanel>
                     <TabPanel value={value} index={2}>
                         <CommentPagination

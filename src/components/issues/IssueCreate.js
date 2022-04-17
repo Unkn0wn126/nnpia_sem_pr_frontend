@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
-import { Card, CardHeader, Avatar, CardContent, Typography, Link, Divider, FormGroup, LinearProgress, TextareaAutosize, Button, Alert, FormControl, MenuItem, InputLabel } from "@mui/material"
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
+import { Card, CardHeader, Avatar, CardContent, Typography, Link, Divider, FormGroup, LinearProgress, TextareaAutosize, Button, Alert, FormControl, MenuItem, InputLabel, TextField as MUITextField, Stack } from "@mui/material"
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Routes, Route, Link as RouterLink } from "react-router-dom";
 import { Formik, Form, Field, useField, useFormikContext } from "formik";
 import { TextField, Select } from 'formik-mui';
@@ -11,11 +11,12 @@ import * as Yup from "yup";
 import IssueService from "../../services/issue.service";
 
 const DatePickerEditor = ({ field, form, ...other }) => {
-    console.log(other)
     const currentError = form.errors[field.name];
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
+                clearable
+                disablePast
                 name={field.name}
                 value={field.value}
                 error={Boolean(currentError)}
@@ -25,10 +26,11 @@ const DatePickerEditor = ({ field, form, ...other }) => {
                         form.setFieldError(field.name, error);
                 }}
                 onChange={(newValue) => {
-                    form.setFieldValue(field.name, newValue, false);
+                    console.log(newValue);
+                    form.setFieldValue(field.name, newValue, true);
                 }}
                 {...other}
-                renderInput={props => <></>}
+                renderInput={(params) => <MUITextField {...params} />}
             />
         </LocalizationProvider>
     )
@@ -45,11 +47,16 @@ const IssueCreate = ({ issue, onIssueSubmit }) => {
         showCompletionState: Yup.boolean(),
         completionState: Yup.string().when("showCompletionState", {
             is: true,
-            then: Yup.string().required("Completion state is required").matches(/^[.]*(TODO|IN-PROGRESS|DONE)/, 'Can only be TODO, IN-PROGRESS or DONE')
-        })
+            then: Yup.string().required("Completion state is required").matches(/^[.]*(TODO|IN_PROGRESS|DONE)/, 'Can only be TODO, IN_PROGRESS or DONE')
+        }),
+        dueDate: Yup.date().nullable()
     });
+
+    console.log(issue && issue.completionState);
+
     return (
         <Card>
+            <CardHeader title={`${issue ? "Update" : "Create new"} issue`} />
             <CardContent>
                 <Formik
                     initialValues={{
@@ -57,7 +64,7 @@ const IssueCreate = ({ issue, onIssueSubmit }) => {
                         content: issue ? issue.content : '',
                         severity: issue ? issue.severity : 'LOW',
                         visibility: issue ? issue.visibility : 'PUBLIC',
-                        dueDate: issue ? issue.dueDate : '',
+                        dueDate: issue ? issue.dueDate : null,
                         completionState: issue ? issue.completionState : 'TODO',
                         showCompletionState: issue !== undefined && issue != null
                     }}
@@ -67,7 +74,6 @@ const IssueCreate = ({ issue, onIssueSubmit }) => {
                     onSubmit={(data, { setSubmitting }) => {
                         setMessage("");
                         if (issue) {
-                            console.log(data);
                             IssueService.updateIssue(issue.id, data).then(
                                 () => {
                                     setSubmitting(false);
@@ -75,7 +81,7 @@ const IssueCreate = ({ issue, onIssueSubmit }) => {
                                     data.content = '';
                                     data.severity = 'LOW';
                                     data.visibility = 'PUBLIC';
-                                    data.dueDate = '';
+                                    data.dueDate = null;
                                     data.completionState = 'TODO';
                                     data.showCompletionState = false;
                                     onIssueSubmit();
@@ -92,7 +98,6 @@ const IssueCreate = ({ issue, onIssueSubmit }) => {
                                 }
                             )
                         } else {
-                            console.log(data);
                             IssueService.createIssue(data).then(
                                 () => {
                                     setSubmitting(false);
@@ -100,7 +105,7 @@ const IssueCreate = ({ issue, onIssueSubmit }) => {
                                     data.content = '';
                                     data.severity = 'LOW';
                                     data.visibility = 'PUBLIC';
-                                    data.dueDate = '';
+                                    data.dueDate = null;
                                     data.completionState = 'TODO';
                                     data.showCompletionState = false;
                                     onIssueSubmit();
@@ -174,9 +179,7 @@ const IssueCreate = ({ issue, onIssueSubmit }) => {
                                 <Field
                                     component={DatePickerEditor}
                                     formHelperText={{ children: 'How visible do you want the issue to be?' }}
-                                    id="due-date"
-                                    name="due-date"
-                                    labelId="due-date"
+                                    name="dueDate"
                                     label="Due date"
                                 >
                                 </Field>
@@ -187,26 +190,44 @@ const IssueCreate = ({ issue, onIssueSubmit }) => {
                                         component={Select}
                                         formHelperText={{ children: 'How visible do you want the issue to be?' }}
                                         id="completion-state"
-                                        name="completion-state"
+                                        name="completionState"
                                         labelId="completion-state-simple"
                                         label="Completion state"
                                     >
                                         <MenuItem value={'TODO'}>TODO</MenuItem>
-                                        <MenuItem value={'IN-PROGRESS'}>IN-PROGRESS</MenuItem>
+                                        <MenuItem value={'IN_PROGRESS'}>IN_PROGRESS</MenuItem>
                                         <MenuItem value={'DONE'}>DONE</MenuItem>
                                     </Field>
                                 </FormGroup>
                             )}
                             {isSubmitting && <LinearProgress className="form-group-spaced" />}
                             <FormGroup className="form-group-spaced">
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    disabled={isSubmitting}
-                                    onClick={submitForm}
+                                <Stack
+                                    direction="row"
+                                    alignItems="center"
+                                    justifyContent="flex-end"
+                                    spacing={4}
                                 >
-                                    Send
-                                </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        disabled={isSubmitting}
+                                        onClick={submitForm}
+                                    >
+                                        Send
+                                    </Button>
+                                    {issue && (
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            disabled={isSubmitting}
+                                            onClick={onIssueSubmit}
+                                        >
+                                            Cancel
+                                        </Button>
+                                    )}
+                                </Stack>
+
                                 <input type="submit" hidden />
                             </FormGroup>
                             {message && (

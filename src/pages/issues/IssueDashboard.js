@@ -46,6 +46,10 @@ const IssueDashboard = (props) => {
         }
     }
 
+    const handleIssueDelete = () => {
+        fetchIssues(page - 1);
+    }
+
     useEffect(() => {
         fetchIssues(page - 1);
     }, [])
@@ -53,7 +57,7 @@ const IssueDashboard = (props) => {
     return (
         <Container maxWidth="md">
             <Box sx={{paddingTop:"30px", paddingBottom: "20px"}}>
-                <IssuePagination issues={issues} page={page} handlePageChange={handlePageChange} isLoadingIssues={isLoading} />
+                <IssuePagination issues={issues} viewingUser={user} page={page} handlePageChange={handlePageChange} onDelete={handleIssueDelete} isLoadingIssues={isLoading} />
             </Box>
         </Container>
     );
