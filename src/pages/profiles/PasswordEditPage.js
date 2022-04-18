@@ -7,8 +7,9 @@ import IssueList from '../../components/issues/IssueList';
 import IssueDetail from '../../components/issues/IssueDetail';
 import UserDetail from '../../components/profiles/UserDetail';
 import ProfileEdit from '../../components/profiles/ProfileEdit';
+import PasswordUpdate from '../../components/profiles/PasswordUpdate';
 
-const ProfileEditPage = (props) => {
+const PasswordEditPage = (props) => {
     const { isAdmin, user } = useContext(UserContext);
     let params = useParams();
     const [viewedUser, setViewedUser] = useState(undefined)
@@ -44,7 +45,7 @@ const ProfileEditPage = (props) => {
                     <CircularProgress />
                 )}
                 {viewedUser && (
-                    <ProfileEdit editedUser={viewedUser} viewingUser={user} onUserSubmit={handleUserSubmit} isAdmin={isAdmin} />
+                    <PasswordUpdate editedUser={viewedUser} viewingUser={user} onUserSubmit={handleUserSubmit} isAdmin={isAdmin} />
                 )
                 }
             </Box>
@@ -52,4 +53,4 @@ const ProfileEditPage = (props) => {
     );
 }
 
-export default ProfileEditPage;
+export default PasswordEditPage;

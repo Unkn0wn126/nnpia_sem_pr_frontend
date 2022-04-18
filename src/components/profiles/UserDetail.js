@@ -53,6 +53,7 @@ const UserDetail = ({ displayedUser, viewingUser, isAdmin }) => {
     const [commentPage, setCommentPage] = useState(1);
 
     const [isEditing, setIsEditing] = useState(false);
+    const [isEditingPassword, setIsEditingPassword] = useState(false);
     const [isDeleted, setIsDeleted] = useState(false);
 
     const handleIssuePageChange = (event, value) => {
@@ -98,6 +99,10 @@ const UserDetail = ({ displayedUser, viewingUser, isAdmin }) => {
         setIsEditing(true);
     }
 
+    const handlePasswordEdit = () => {
+        setIsEditingPassword(true);
+    }
+
     const handleUserDelete = () => {
         UserService.deleteUser(displayedUser.id).then(() => {
             if(displayedUser.username === viewingUser.username){
@@ -107,7 +112,6 @@ const UserDetail = ({ displayedUser, viewingUser, isAdmin }) => {
         }).catch(err => {
 
         })
-
     }
 
     const handleCommentSubmit = () => {
@@ -134,6 +138,8 @@ const UserDetail = ({ displayedUser, viewingUser, isAdmin }) => {
         return <Navigate replace to={`/users/edit/${displayedUser.username}`} />
     }else if(isDeleted){
         return <Navigate replace to={`/users/`}/>
+    }else if(isEditingPassword){
+        return <Navigate replace to={`/users/change-password/${displayedUser.username}`} />
     }
 
     return (
@@ -162,6 +168,9 @@ const UserDetail = ({ displayedUser, viewingUser, isAdmin }) => {
                                     <>
                                         <Button onClick={handleUserEdit}  variant="contained">
                                             Edit
+                                        </Button>
+                                        <Button onClick={handlePasswordEdit}  variant="contained">
+                                            Change password
                                         </Button>
                                         {((isAdmin && displayedUser.username !== viewingUser.username) || (!isAdmin && displayedUser.username === viewingUser.username)) && (
                                             <Button onClick={handleUserDelete} variant="contained" color="error">
