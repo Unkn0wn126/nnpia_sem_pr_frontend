@@ -9,7 +9,7 @@ import UserDetail from '../../components/profiles/UserDetail';
 import ProfileEdit from '../../components/profiles/ProfileEdit';
 
 const ProfileEditPage = (props) => {
-    const { isAdmin, user } = useContext(UserContext);
+    const { isAdmin, updateUserDetails, user } = useContext(UserContext);
     let params = useParams();
     const [viewedUser, setViewedUser] = useState(undefined)
     const [isLoading, setIsLoading] = useState(true);
@@ -26,6 +26,9 @@ const ProfileEditPage = (props) => {
     }
 
     const handleUserSubmit = () => {
+        if(user.username === viewedUser.username){
+            updateUserDetails();
+        }
         setNavigate(true);
     }
 

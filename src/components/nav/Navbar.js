@@ -1,7 +1,7 @@
 import { AppBar, Box, Container, IconButton, Toolbar, Typography, Menu, MenuItem, Button, Tooltip, Avatar, Link, Divider } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Search from "./Search";
 import SearchIconWrapper from "./SearchIconWrapper";
 import StyledInputBase from "./StyledInputBase";
@@ -9,6 +9,12 @@ import { Routes, Route, Link as RouterLink } from "react-router-dom";
 
 
 const Navbar = ({ currentUser, pages, settings }) => {
+    const [viewingUser, setViewingUser] = useState(currentUser);
+    
+    useEffect(() => {
+        setViewingUser(currentUser);
+    }, [currentUser])
+
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -85,7 +91,7 @@ const Navbar = ({ currentUser, pages, settings }) => {
                                     </MenuItem>
                                 </Link>
                             ))}
-                            {!currentUser && (
+                            {!viewingUser && (
                                 <div>
                                     <Link component={RouterLink} to={"/login"} textAlign="center" underline="none">
                                         <MenuItem
@@ -138,11 +144,11 @@ const Navbar = ({ currentUser, pages, settings }) => {
                             />
                         </Search>
                     </Toolbar>
-                    {currentUser && (
+                    {viewingUser && (
                         <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt={currentUser.username} src="/static/images/avatar/2.jpg" />
+                                    <Avatar alt={viewingUser.username} src={viewingUser.profile.profilePicture} />
                                 </IconButton>
                             </Tooltip>
                             <Menu
@@ -171,7 +177,7 @@ const Navbar = ({ currentUser, pages, settings }) => {
                             </Menu>
                         </Box>
                     )}
-                    {!currentUser && (
+                    {!viewingUser && (
                         <Box sx={{ flexGrow: 0 }}>
                             <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: '10px' }}>
                                 <Link component={RouterLink} to={"/login"}

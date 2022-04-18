@@ -57,12 +57,10 @@ const IssueItem = ({ issue, viewingUser, onDelete, isAdmin }) => {
         <Card>
             <CardHeader
                 avatar={
-                    <Avatar aria-label="author" alt={issue.author.username} src="/static/images/avatar/2.jpg">
-
-                    </Avatar>
+                    <Avatar aria-label="author" alt={viewedIssue.author.username} src={viewedIssue.author.profile.profilePicture} />
                 }
-                title={<Link component={RouterLink} to={`/users/${issue.author.username}`} underline='none'>{issue.author.profile.nickname}</Link>}
-                subheader={issue.published}
+                title={<Link component={RouterLink} to={`/users/${viewedIssue.author.username}`} underline='none'>{viewedIssue.author.profile.nickname}</Link>}
+                subheader={viewedIssue.published}
             />
             <Divider />
             <CardContent>
@@ -74,7 +72,7 @@ const IssueItem = ({ issue, viewingUser, onDelete, isAdmin }) => {
                             spacing={2}
                         >
                             <Typography gutterBottom variant="h5" component="div">
-                                <Link component={RouterLink} to={`/issues/${issue.id}`} underline='none'>{issue.header}</Link>
+                                <Link component={RouterLink} to={`/issues/${viewedIssue.id}`} underline='none'>{viewedIssue.header}</Link>
                             </Typography>
                             <Stack
                                 spacing={{ xs: 1, sm: 2, md: 4 }}
@@ -99,7 +97,7 @@ const IssueItem = ({ issue, viewingUser, onDelete, isAdmin }) => {
                             </Stack>
                             <Divider orientation="horizontal" flexItem />
                             <Typography variant="body1" color="text.secondary">
-                                {issue.content}
+                                {viewedIssue.content}
                             </Typography>
                         </Stack>
                     </>

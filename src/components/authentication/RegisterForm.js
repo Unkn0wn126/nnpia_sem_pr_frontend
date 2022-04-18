@@ -46,7 +46,7 @@ const RegisterForm = (props) => {
                     onSubmit={(data, { setSubmitting }) => {
                         setMessage("");
                         console.log(data);
-                        AuthService.register({ email: data.email, password: data.password, profile: { nickname: data.nickname, profilePicturePath: data.profilePicture }, username: data.username }).then(
+                        AuthService.register({ email: data.email, password: data.password, profile: { nickname: data.nickname, profilePicture: data.profilePicture }, username: data.username }).then(
                             () => {
                                 navigate("/home");
                                 window.location.reload();
@@ -70,7 +70,6 @@ const RegisterForm = (props) => {
 
                                 <Field
                                     component={UploadComponent}
-                                    formHelperText={{ children: 'How visible do you want the issue to be?' }}
                                     name="profilePicture"
                                     label="Profile picture"
                                 >

@@ -1,8 +1,8 @@
 import React, { useState, useRef, useContext } from "react";
-import { Card, CardHeader, Avatar, CardContent, Typography, Link, Divider, FormGroup, LinearProgress, TextareaAutosize, Button, Alert, Stack, Select, MenuItem } from "@mui/material"
+import { Card, CardHeader, Avatar, CardContent, Typography, Link, Divider, FormGroup, LinearProgress, TextareaAutosize, Button, Alert, Stack, MenuItem } from "@mui/material"
 import { Routes, Route, Link as RouterLink, Navigate } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
-import { TextField } from 'formik-mui';
+import { TextField, Select } from 'formik-mui';
 import CommentService from "../../services/comment.service";
 import * as Yup from "yup";
 import UserService from "../../services/user.service";
@@ -15,7 +15,7 @@ const ProfileEdit = ({ viewingUser, editedUser, onUserSubmit, isAdmin }) => {
     const validationSchema = Yup.object({
         email: Yup.string().email().required('Email is required'),
         nickname: Yup.string().required('Nickname is required'),
-        state: Yup.string().matches(/^[.]*(LOW|MEDIUM|HIGH)/, 'Can only be ACTIVE, INACTIVE or BANNED'),
+        userState: Yup.string().matches(/^[.]*(ACTIVE|INACTIVE|BANNED)/, 'Can only be ACTIVE, INACTIVE or BANNED'),
         profilePicture: Yup.mixed().nullable()
     });
     if (!editedUser) {
@@ -24,29 +24,28 @@ const ProfileEdit = ({ viewingUser, editedUser, onUserSubmit, isAdmin }) => {
     return (
         <Card>
             <CardContent>
-            <Typography variant="h4" textAlign="center">
-                Edit user: {editedUser.username}
-            </Typography>
+                <Typography variant="h4" textAlign="center">
+                    Edit user: {editedUser.username}
+                </Typography>
                 <Formik
                     initialValues={{
                         email: editedUser.email,
                         nickname: editedUser.profile.nickname,
-                        state: "",
-                        profilePicture: editedUser.profile.profilePicturePath
+                        userState: editedUser.state,
+                        profilePicture: editedUser.profile.profilePicture
                     }}
                     validationSchema={validationSchema}
                     validateOnChange={true}
                     validateOnBlur={true}
                     onSubmit={(data, { setSubmitting }) => {
                         setMessage("");
-                        console.log(data);
                         UserService.updateUser(editedUser.id, {
                             email: data.email,
-                            id: data.id,
+                            state: data.userState,
                             profile: {
                                 id: editedUser.profile.id,
                                 nickname: data.nickname,
-                                profilePicturePath: data.profilePicture
+                                profilePicture: data.profilePicture
                             }
                         }).then(
                             () => {
@@ -72,13 +71,12 @@ const ProfileEdit = ({ viewingUser, editedUser, onUserSubmit, isAdmin }) => {
                     }}>
                     {({ submitForm, isSubmitting }) => (
                         <Form>
-                        <Field
-                                    component={UploadComponent}
-                                    formHelperText={{ children: 'How visible do you want the issue to be?' }}
-                                    name="profilePicture"
-                                    label="Profile picture"
-                                >
-                                </Field>
+                            <Field
+                                component={UploadComponent}
+                                name="profilePicture"
+                                label="Profile picture"
+                            >
+                            </Field>
                             <FormGroup className="form-group-spaced">
                                 <Field
                                     component={TextField}
@@ -99,26 +97,25 @@ const ProfileEdit = ({ viewingUser, editedUser, onUserSubmit, isAdmin }) => {
                             </FormGroup>
                             {(isAdmin && viewingUser.username !== editedUser.username) && (
                                 <FormGroup className="form-group-spaced">
-                                <Field
-                                    component={Select}
-                                    formHelperText={{ children: 'How visible do you want the issue to be?' }}
-                                    id="visibility"
-                                    name="visibility"
-                                    labelId="visibility-simple"
-                                    label="Visibility"
-                                >
-                                    <MenuItem value={'ACTIVE'}>ACTIVE</MenuItem>
-                                    <MenuItem value={'INACTIVE'}>INACTIVE</MenuItem>
-                                    <MenuItem value={'BANNED'}>BANNED</MenuItem>
-                                </Field>
-                            </FormGroup>
+                                    <Field
+                                        component={Select}
+                                        id="state"
+                                        name="userState"
+                                        labelId="state-simple"
+                                        label="User state"
+                                    >
+                                        <MenuItem value={'ACTIVE'}>ACTIVE</MenuItem>
+                                        <MenuItem value={'INACTIVE'}>INACTIVE</MenuItem>
+                                        <MenuItem value={'BANNED'}>BANNED</MenuItem>
+                                    </Field>
+                                </FormGroup>
                             )}
 
                             {isSubmitting && <LinearProgress className="form-group-spaced" />}
                             <FormGroup className="form-group-spaced">
                                 <Stack
                                     direction={{ xs: "column", sm: "row", md: "row" }}
-                                    alignItems={{xs: "stretch", md: "center"}}
+                                    alignItems={{ xs: "stretch", md: "center" }}
                                     justifyContent="flex-end"
                                     spacing={{ xs: 1, sm: 2, md: 4 }}
                                 >

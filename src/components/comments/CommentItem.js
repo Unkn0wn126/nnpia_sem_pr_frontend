@@ -29,7 +29,7 @@ const CommentItem = ({ issue, comment, viewingUser, onDelete, isAdmin }) => {
         <Card>
             <CardHeader
                 avatar={
-                    <Avatar aria-label="author" alt={viewedComment.author.username} src="/static/images/avatar/2.jpg" />
+                    <Avatar aria-label="author" alt={viewedComment.author.username} src={viewedComment.author.profile.profilePicture} />
                 }
                 title={<Link component={RouterLink} to={`/users/${viewedComment.author.username}`} underline='none'>{viewedComment.author.profile.nickname}</Link>}
                 subheader={viewedComment.created === viewedComment.lastEdited ? `${viewedComment.created}` : `${viewedComment.created} (last edit: ${viewedComment.lastEdited})`}

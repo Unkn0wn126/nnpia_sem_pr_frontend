@@ -1,5 +1,6 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import UserService from "./user.service";
 
 const register = (userRegisterDto) => {
     return axios
@@ -28,6 +29,14 @@ const getCurrentUser = () => {
     return JSON.parse(localStorage.getItem("user"));
 }
 
+const updateUserDetails = () => {
+    UserService.getUserByUsername(getCurrentUser().username).then((response) => {
+        localStorage.setItem("user", JSON.stringify(response.data));
+    }).catch(err => {
+
+    });
+}
+
 const isAdmin = () => {
     const user = getCurrentUser();
     return user && user.roles.filter(role => role.type === 'ROLE_ADMIN').length > 0;
@@ -46,6 +55,7 @@ const AuthService = {
     login,
     logout,
     getCurrentUser,
+    updateUserDetails,
     isAdmin,
     getJwtToken,
     getRefreshToken

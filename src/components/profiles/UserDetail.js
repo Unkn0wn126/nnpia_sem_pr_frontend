@@ -147,7 +147,7 @@ const UserDetail = ({ displayedUser, viewingUser, isAdmin }) => {
             <CardContent>
                 <Stack direction="column" alignItems="stretch" justifyContent="flex-start" spacing={5} sx={{ marginBottom: "10px" }}>
                     <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={5} sx={{ marginBottom: "10px" }}>
-                        <Avatar alt={displayedUser.username} src="/static/images/avatar/1.jpg" sx={{ width: 100, height: 100 }} />
+                        <Avatar alt={displayedUser.username} src={displayedUser.profile.profilePicture} sx={{ width: 100, height: 100 }} />
                         <Stack direction="column" alignItems="stretch" justifyContent="flex-start" spacing={1} sx={{ marginBottom: "10px" }}>
                             <Typography variant="h5">
                                 {displayedUser.profile.nickname}

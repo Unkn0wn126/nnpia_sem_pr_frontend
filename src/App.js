@@ -23,6 +23,11 @@ import PasswordEditPage from './pages/profiles/PasswordEditPage';
 
 function App() {
   const { isAdmin, user, logout } = useContext(UserContext);
+  const [currentUser, setCurrentUser] = useState(user);
+
+  useEffect(() => {
+    setCurrentUser(user);
+  }, [user])
 
   const pages = [
     { text: 'Home', link: '/home' },
@@ -42,14 +47,11 @@ function App() {
 
   if(user){
     pages.push({ text: 'Create issue', link: '/issues/create' });
-    /*if(isAdmin){
-      settings.splice(2, 0, { text: 'Admin console', link: '/admin', onClick: null });
-    }*/
   }
 
   return (
     <div>
-      <Navbar currentUser={user} pages={pages} settings={settings} />
+      <Navbar currentUser={currentUser} pages={pages} settings={settings} />
       <div className='container'>
         <Routes>
           <Route path="/" element={<HomePage />} />

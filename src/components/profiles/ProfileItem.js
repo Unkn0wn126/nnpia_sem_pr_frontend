@@ -43,9 +43,7 @@ const ProfileItem = ({ user, viewingUser, onDelete, isAdmin }) => {
         <Card>
             <CardHeader
                 avatar={
-                    <Avatar aria-label="author" alt={user.username} src="/static/images/avatar/2.jpg">
-
-                    </Avatar>
+                    <Avatar aria-label="author" alt={user.username} src={user.profile.profilePicture} />
                 }
                 title={<Link component={RouterLink} to={`/users/${user.username}`} underline='none'>{user.profile.nickname}</Link>}
             />

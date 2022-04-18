@@ -103,7 +103,7 @@ const IssueDetail = ({ issue, viewingUser, isAdmin }) => {
         <Card>
             <CardHeader
                 avatar={
-                    <Avatar aria-label="author" alt={viewedIssue.author.username} src="/static/images/avatar/2.jpg" />
+                    <Avatar aria-label="author" alt={viewedIssue.author.username} src={viewedIssue.author.profile.profilePicture} />
                 }
                 title={<Link component={RouterLink} to={`/users/${viewedIssue.author.username}`} underline='none'>{issue.author.profile.nickname}</Link>}
                 subheader={viewedIssue.published}

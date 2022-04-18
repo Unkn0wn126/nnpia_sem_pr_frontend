@@ -9,6 +9,11 @@ const UserProvider = ({ children }) => {
     const [user, setUser] = useState(AuthService.getCurrentUser());
     const [isAdmin, setIsAdmin] = useState(AuthService.isAdmin());
 
+    const updateUserDetails = () => {
+        AuthService.updateUserDetails();
+        setUser(AuthService.getCurrentUser());
+    }
+
     const login = (loginRequest) => {
         return AuthService.login(loginRequest);
     }
@@ -20,7 +25,7 @@ const UserProvider = ({ children }) => {
     }
 
     return (
-        <UserContext.Provider value={{isAdmin, user, login, logout }}>
+        <UserContext.Provider value={{isAdmin, user, updateUserDetails, login, logout }}>
             {children}
         </UserContext.Provider>
     );

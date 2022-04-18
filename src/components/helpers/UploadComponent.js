@@ -7,13 +7,18 @@ import { useDropzone } from 'react-dropzone';
 const UploadComponent = ({ field, form, ...other }) => {
     const currentError = form.errors[field.name];
     const [imageURL, setImageURL] = useState([]);
+    const reader = new FileReader();
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: "image/*",
         onDrop: acceptedFiles => {
             const newImageUrl = [];
-            newImageUrl.push(URL.createObjectURL(acceptedFiles[0]));
+            reader.readAsDataURL(acceptedFiles[0]);
+            reader.onload = e => {
+                form.setFieldValue("profilePicture", reader.result);
+                newImageUrl.push(reader.result);
+            }
             setImageURL(newImageUrl);
-            form.setFieldValue("profilePicture", btoa(newImageUrl));
+
         }
     });
 
@@ -32,7 +37,7 @@ const UploadComponent = ({ field, form, ...other }) => {
             <Tooltip title="Click or drag to upload image">
                 <div {...getRootProps({ className: 'dropzone' })}>
                     <input {...getInputProps()} />
-                    <Avatar className="content-center form-group-spaced" src={imageURL[0]} sx={{ width: 100, height: 100 }} />
+                    <Avatar className="content-center form-group-spaced" src={field.value} sx={{ width: 100, height: 100 }} />
                     <Typography variant="body1" sx={{ textAlign: "center" }}>Upload image</Typography>
 
                 </div>
