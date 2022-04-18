@@ -1,2 +1,2 @@
 # Deployed production
-This project is deployed on [Vercel](nnpia-sem-pr-frontend.vercel.app).
+This project is deployed on [Vercel](https://nnpia-sem-pr-frontend.vercel.app/).
