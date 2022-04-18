@@ -23,7 +23,7 @@ const visibilityColors = {
     "PRIVATE": "secondary"
 }
 
-const IssueItem = ({ issue, viewingUser, onDelete }) => {
+const IssueItem = ({ issue, viewingUser, onDelete, isAdmin }) => {
     const [viewedIssue, setViewedIssue] = useState({ ...issue });
     const [isEditing, setIsEditing] = useState(false);
     const [completionStateColor, setCompletionStateColor] = useState(completionStateColors[viewedIssue.completionState]);
@@ -86,7 +86,7 @@ const IssueItem = ({ issue, viewingUser, onDelete }) => {
                                 <Chip label={viewedIssue.severity} color={severityColor} />
                                 <Chip label={viewedIssue.completionState} color={completionStateColor} />
                                 {viewedIssue.dueDate && (<Typography variant="body1" >Due date {viewedIssue.dueDate}</Typography>)}
-                                {(viewingUser && viewedIssue.author.username === viewingUser.username) && (
+                                {(isAdmin || (viewingUser && viewedIssue.author.username === viewingUser.username)) && (
                                     <>
                                         <Button onClick={handleEdit} variant="contained">
                                             Edit

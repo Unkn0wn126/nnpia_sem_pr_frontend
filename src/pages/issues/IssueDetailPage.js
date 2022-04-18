@@ -7,7 +7,7 @@ import IssueList from '../../components/issues/IssueList';
 import IssueDetail from '../../components/issues/IssueDetail';
 
 const IssueDetailPage = (props) => {
-    const { user } = useContext(UserContext);
+    const { isAdmin, user } = useContext(UserContext);
     let params = useParams();
     const [issue, setIssue] = useState(undefined)
     const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +33,7 @@ const IssueDetailPage = (props) => {
                     <CircularProgress />
                 )}
                 {issue && (
-                    <IssueDetail issue={issue} viewingUser={user} />
+                    <IssueDetail issue={issue} viewingUser={user} isAdmin={isAdmin} />
                 )
                 }
             </Box>

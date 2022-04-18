@@ -116,7 +116,6 @@ const Navbar = ({ currentUser, pages, settings }) => {
                     </Typography>
                     <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: '10px' }}>
                         {pages.map((page) => (
-                            <>
                             <Link
                                 component={RouterLink}
                                 key={page.text}
@@ -128,8 +127,6 @@ const Navbar = ({ currentUser, pages, settings }) => {
                             >
                                 {page.text}
                             </Link>
-                            <Divider orientation="vertical" variant="middle" />
-                            </>
                         ))}
                         <Search>
                             <SearchIconWrapper>

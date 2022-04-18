@@ -15,7 +15,7 @@ function useQuery() {
 }
 
 const CommentDashboard = (props) => {
-    const { user } = useContext(UserContext);
+    const { isAdmin, user } = useContext(UserContext);
     const history = useNavigate();
     const query = useQuery();
     const [comments, setComments] = useState(undefined);
@@ -53,7 +53,7 @@ const CommentDashboard = (props) => {
     return (
         <Container maxWidth="md">
             <Box sx={{ paddingTop: "30px", paddingBottom: "20px" }}>
-                <CommentPagination issue={null} comments={comments} viewingUser={user} page={page} handlePageChange={handlePageChange} onCommentDelete={handleIssueDelete} onCommentSubmit={handleCommentSubmit} isLoadingIssues={isLoading} />
+                <CommentPagination issue={null} comments={comments} viewingUser={user} page={page} handlePageChange={handlePageChange} onCommentDelete={handleIssueDelete} onCommentSubmit={handleCommentSubmit} isLoadingIssues={isLoading} isAdmin={isAdmin} />
             </Box>
         </Container>
     );

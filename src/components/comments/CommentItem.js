@@ -4,7 +4,7 @@ import { Routes, Route, Link as RouterLink } from "react-router-dom";
 import CommentService from "../../services/comment.service";
 import CommentCreate from "./CommentCreate";
 
-const CommentItem = ({ issue, comment, viewingUser, onDelete }) => {
+const CommentItem = ({ issue, comment, viewingUser, onDelete, isAdmin }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [viewedComment, setViewedComment] = useState({ ...comment });
 
@@ -29,9 +29,7 @@ const CommentItem = ({ issue, comment, viewingUser, onDelete }) => {
         <Card>
             <CardHeader
                 avatar={
-                    <Avatar aria-label="author" alt={viewedComment.author.username} src="/static/images/avatar/2.jpg">
-
-                    </Avatar>
+                    <Avatar aria-label="author" alt={viewedComment.author.username} src="/static/images/avatar/2.jpg" />
                 }
                 title={<Link component={RouterLink} to={`/users/${viewedComment.author.username}`} underline='none'>{viewedComment.author.profile.nickname}</Link>}
                 subheader={viewedComment.created === viewedComment.lastEdited ? `${viewedComment.created}` : `${viewedComment.created} (last edit: ${viewedComment.lastEdited})`}
@@ -43,7 +41,7 @@ const CommentItem = ({ issue, comment, viewingUser, onDelete }) => {
                     justifyContent="space-evenly"
                     spacing={2}
                 >
-                    {(viewingUser && viewedComment.author.username === viewingUser.username) && (<Stack
+                    {(isAdmin || (viewingUser && viewedComment.author.username === viewingUser.username)) && (<Stack
                         direction={{ xs: "column", sm: "row", md: "row" }}
                         alignItems={{ xs: "stretch", md: "center" }}
                         justifyContent="flex-end"

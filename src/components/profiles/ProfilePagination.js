@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { Box, CircularProgress, Container, Grid, Pagination, Stack, Typography } from '@mui/material';
 import ProfileList from './ProfileList';
 
-const ProfilePagination = ({ users, page, viewingUser, handlePageChange, isLoadingUsers, onDelete }) => {
+const ProfilePagination = ({ users, page, viewingUser, handlePageChange, isLoadingUsers, onDelete, isAdmin }) => {
     return (
         <>
             {isLoadingUsers && (
@@ -11,7 +11,7 @@ const ProfilePagination = ({ users, page, viewingUser, handlePageChange, isLoadi
             )}
             {(users && users.users.length > 0) && (
                 <Stack spacing={4} alignItems="stretch" justifyContent="flex-end">
-                    <ProfileList profileList={users.users} viewingUser={viewingUser} onDelete={onDelete} />
+                    <ProfileList profileList={users.users} viewingUser={viewingUser} onDelete={onDelete} isAdmin={isAdmin} />
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                         <Pagination count={users.totalPages} page={page} onChange={handlePageChange} color="primary" />
                     </Box>

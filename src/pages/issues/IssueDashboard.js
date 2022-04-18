@@ -13,7 +13,7 @@ function useQuery() {
 }
 
 const IssueDashboard = (props) => {
-    const { user } = useContext(UserContext);
+    const { isAdmin, user } = useContext(UserContext);
     const history = useNavigate();
     const query = useQuery();
     const [issues, setIssues] = useState(undefined);
@@ -47,7 +47,7 @@ const IssueDashboard = (props) => {
     return (
         <Container maxWidth="md">
             <Box sx={{ paddingTop: "30px", paddingBottom: "20px" }}>
-                <IssuePagination issues={issues} viewingUser={user} page={page} handlePageChange={handlePageChange} onDelete={handleIssueDelete} isLoadingIssues={isLoading} />
+                <IssuePagination issues={issues} viewingUser={user} page={page} handlePageChange={handlePageChange} onDelete={handleIssueDelete} isLoadingIssues={isLoading} isAdmin={isAdmin} />
             </Box>
         </Container>
     );

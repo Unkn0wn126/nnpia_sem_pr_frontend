@@ -1,7 +1,7 @@
 import { Stack, Divider  } from "@mui/material";
 import IssueItem from "./IssueItem";
 
-const IssueList = ({issueList, viewingUser, onDelete}) => {
+const IssueList = ({issueList, viewingUser, onDelete, isAdmin }) => {
     return(
     <Stack
     spacing={{ xs: 1, sm: 2, md: 4 }}
@@ -10,7 +10,7 @@ const IssueList = ({issueList, viewingUser, onDelete}) => {
     justifyContent="space-evenly"
     >
         {issueList.map((issue) => (
-            <IssueItem key={issue.id} viewingUser={viewingUser} issue={issue} onDelete={onDelete} />
+            <IssueItem key={issue.id} viewingUser={viewingUser} issue={issue} onDelete={onDelete} isAdmin={isAdmin} />
         ))}
     </Stack>
     );

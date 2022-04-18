@@ -1,8 +1,8 @@
-import { Card, CardHeader, Avatar, CardContent, Typography, Link, CircularProgress, Divider, Grid, Stack, Tabs, Tab, Box, Pagination } from "@mui/material"
+import { Card, CardHeader, Avatar, CardContent, Typography, Link, CircularProgress, Divider, Grid, Stack, Tabs, Tab, Box, Pagination, Button } from "@mui/material"
 import PropTypes from 'prop-types';
 import { UserContext } from '../../providers/UserContext'
 import { useEffect, useContext, useState } from "react";
-import { Routes, Route, Link as RouterLink, useParams } from "react-router-dom";
+import { Routes, Route, Link as RouterLink, useParams, Navigate } from "react-router-dom";
 import CommentList from "../comments/CommentList";
 import IssueService from '../../services/issue.service';
 import IssueList from '../issues/IssueList';
@@ -10,6 +10,7 @@ import IssuePagination from "../issues/IssuePagination";
 import ProfileDetail from "./ProfileDetail";
 import CommentPagination from "../comments/CommentPagination";
 import CommentService from "../../services/comment.service";
+import UserService from "../../services/user.service";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -37,8 +38,9 @@ TabPanel.propTypes = {
     value: PropTypes.number.isRequired,
 };
 
-const UserDetail = ({ displayedUser, viewingUser }) => {
+const UserDetail = ({ displayedUser, viewingUser, isAdmin }) => {
     const [value, setValue] = useState(0);
+    const {logout} = useContext(UserContext);
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -49,6 +51,9 @@ const UserDetail = ({ displayedUser, viewingUser }) => {
     const [comments, setComments] = useState(undefined);
     const [isLoadingComments, setisLoadingComments] = useState(true);
     const [commentPage, setCommentPage] = useState(1);
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(false);
 
     const handleIssuePageChange = (event, value) => {
         setIssuePage(value);
@@ -89,6 +94,22 @@ const UserDetail = ({ displayedUser, viewingUser }) => {
         });
     }
 
+    const handleUserEdit = () => {
+        setIsEditing(true);
+    }
+
+    const handleUserDelete = () => {
+        UserService.deleteUser(displayedUser.id).then(() => {
+            if(displayedUser.username === viewingUser.username){
+                logout();
+            }
+            setIsDeleted(true);
+        }).catch(err => {
+
+        })
+
+    }
+
     const handleCommentSubmit = () => {
         fetchComments(commentPage - 1);
     }
@@ -109,6 +130,12 @@ const UserDetail = ({ displayedUser, viewingUser }) => {
         }
     }, [value]);
 
+    if(isEditing){
+        return <Navigate replace to={`/users/edit/${displayedUser.username}`} />
+    }else if(isDeleted){
+        return <Navigate replace to={`/users/`}/>
+    }
+
     return (
         <Card>
             <CardContent>
@@ -125,6 +152,25 @@ const UserDetail = ({ displayedUser, viewingUser }) => {
                             <Typography>
                                 State: {displayedUser.state}
                             </Typography>
+                            <Stack
+                                spacing={{ xs: 1, sm: 2, md: 4 }}
+                                direction={{xs: "column", sm:"row", md:"row"}}
+                                alignItems="center"
+                                justifyContent="flex-start"
+                            >
+                                {((viewingUser && displayedUser.username === viewingUser.username) || isAdmin) && (
+                                    <>
+                                        <Button onClick={handleUserEdit}  variant="contained">
+                                            Edit
+                                        </Button>
+                                        {((isAdmin && displayedUser.username !== viewingUser.username) || (!isAdmin && displayedUser.username === viewingUser.username)) && (
+                                            <Button onClick={handleUserDelete} variant="contained" color="error">
+                                                Delete
+                                            </Button>
+                                        )}
+                                    </>
+                                )}
+                            </Stack>
                         </Stack>
                     </Stack>
                     <Divider />
@@ -137,7 +183,7 @@ const UserDetail = ({ displayedUser, viewingUser }) => {
                         <ProfileDetail displayedUser={displayedUser} />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        <IssuePagination viewingUser={viewingUser} issues={issues} page={issuePage} handlePageChange={handleIssuePageChange} onDelete={handleIssueDelete} isLoadingIssues={isLoadingIssues} />
+                        <IssuePagination viewingUser={viewingUser} issues={issues} page={issuePage} handlePageChange={handleIssuePageChange} onDelete={handleIssueDelete} isLoadingIssues={isLoadingIssues} isAdmin={isAdmin} />
                     </TabPanel>
                     <TabPanel value={value} index={2}>
                         <CommentPagination
@@ -148,7 +194,8 @@ const UserDetail = ({ displayedUser, viewingUser }) => {
                             onCommentDelete={handleCommentDelete}
                             page={commentPage}
                             handlePageChange={handleCommentPageChange}
-                            isLoadingComments={isLoadingComments} />
+                            isLoadingComments={isLoadingComments}
+                            isAdmin={isAdmin} />
                     </TabPanel>
                 </Stack>
             </CardContent>

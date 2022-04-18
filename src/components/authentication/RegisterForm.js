@@ -48,7 +48,7 @@ const RegisterForm = (props) => {
                         console.log(data);
                         AuthService.register({ email: data.email, password: data.password, profile: { nickname: data.nickname, profilePicturePath: data.profilePicture }, username: data.username }).then(
                             () => {
-                                navigate("/profile");
+                                navigate("/home");
                                 window.location.reload();
                                 setSubmitting(false);
                             },

@@ -27,7 +27,7 @@ const visibilityColors = {
     "PRIVATE": "secondary"
 }
 
-const IssueDetail = ({ issue, viewingUser }) => {
+const IssueDetail = ({ issue, viewingUser, isAdmin }) => {
     const [viewedIssue, setViewedIssue] = useState({ ...issue });
     const [isEditing, setIsEditing] = useState(false);
     const [comments, setComments] = useState(undefined);
@@ -103,9 +103,7 @@ const IssueDetail = ({ issue, viewingUser }) => {
         <Card>
             <CardHeader
                 avatar={
-                    <Avatar aria-label="author" alt={viewedIssue.author.username} src="/static/images/avatar/2.jpg">
-
-                    </Avatar>
+                    <Avatar aria-label="author" alt={viewedIssue.author.username} src="/static/images/avatar/2.jpg" />
                 }
                 title={<Link component={RouterLink} to={`/users/${viewedIssue.author.username}`} underline='none'>{issue.author.profile.nickname}</Link>}
                 subheader={viewedIssue.published}
@@ -132,7 +130,7 @@ const IssueDetail = ({ issue, viewingUser }) => {
                                 <Chip label={viewedIssue.severity} color={severityColor} />
                                 <Chip label={viewedIssue.completionState} color={completionStateColor} />
                                 {viewedIssue.dueDate && (<Typography variant="body1" >Due date {viewedIssue.dueDate}</Typography>)}
-                                {(viewingUser && viewedIssue.author.username === viewingUser.username) && (
+                                {(isAdmin || (viewingUser && viewedIssue.author.username === viewingUser.username)) && (
                                     <>
                                         <Button onClick={handleEdit}  variant="contained">
                                             Edit

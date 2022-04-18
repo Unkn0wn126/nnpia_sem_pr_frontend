@@ -15,7 +15,7 @@ function useQuery() {
 }
 
 const ProfileDashboard = (props) => {
-    const { user } = useContext(UserContext);
+    const { isAdmin, user } = useContext(UserContext);
     const history = useNavigate();
     const query = useQuery();
     const [users, setUsers] = useState(undefined);
@@ -49,7 +49,7 @@ const ProfileDashboard = (props) => {
     return (
         <Container maxWidth="md">
             <Box sx={{ paddingTop: "30px", paddingBottom: "20px" }}>
-                <ProfilePagination users={users} viewingUser={user} page={page} handlePageChange={handlePageChange} onDelete={handleIssueDelete} isLoadingUsers={isLoading} />
+                <ProfilePagination users={users} viewingUser={user} page={page} handlePageChange={handlePageChange} onDelete={handleIssueDelete} isLoadingUsers={isLoading} isAdmin={isAdmin} />
             </Box>
         </Container>
     );

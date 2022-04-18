@@ -17,6 +17,8 @@ import HomePage from './pages/HomePage';
 import IssueCreatePage from './pages/issues/IssueCreatePage';
 import { CommentsDisabled } from '@mui/icons-material';
 import ProfileDashboard from './pages/profiles/ProfileDashboard';
+import NotFoundPage from './pages/NotFoundPage';
+import ProfileEditPage from './pages/profiles/ProfileEditPage';
 
 function App() {
   const { isAdmin, user, logout } = useContext(UserContext);
@@ -30,7 +32,7 @@ function App() {
 
   const settings = [
     { text: 'Profile', link: `/users/${user && user.username}`, onClick: null },
-    { text: 'Edit profile', link: '/edit-account', onClick: null },
+    { text: 'Edit profile', link: `/users/edit/${user && user.username}`, onClick: null },
     { text: 'Logout', link: '/logout', onClick: logout }
   ];
 
@@ -50,7 +52,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<HomePage />} />
-          <Route path="/edit-account" element={<HomePage />} />
+          <Route path="/users/edit/:username" element={<ProfileEditPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<HomePage />} />
           <Route path="/register" element={<Register />} />
@@ -60,6 +62,7 @@ function App() {
           <Route path="/issues" element={<IssueDashboard />} />
           <Route path="/issues/create" element={<IssueCreatePage />} />
           <Route path="/issues/:issueId" element={<IssueDetailPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
     </div>

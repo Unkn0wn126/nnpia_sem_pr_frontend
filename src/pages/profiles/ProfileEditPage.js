@@ -6,30 +6,35 @@ import { Box, CircularProgress, Container, Grid, Pagination, Stack } from '@mui/
 import IssueList from '../../components/issues/IssueList';
 import IssueDetail from '../../components/issues/IssueDetail';
 import UserDetail from '../../components/profiles/UserDetail';
+import ProfileEdit from '../../components/profiles/ProfileEdit';
 
-const ProfileDetailPage = (props) => {
-    const { isAdmin, user } = useContext(UserContext);
+const ProfileEditPage = (props) => {
+    const { user } = useContext(UserContext);
     let params = useParams();
     const [viewedUser, setViewedUser] = useState(undefined)
     const [isLoading, setIsLoading] = useState(true);
-    const [redirect, setRedirect] = useState(false);
-    const fetchIssue = (username) => {
+    const [navigate, setNavigate] = useState(false);
+    const fetchUserInfo = (username) => {
         setIsLoading(true);
         UserService.getUserByUsername(username).then((data) => {
             setViewedUser(data.data);
         }).catch(err => {
-            setRedirect(true);
+
         }).finally(() => {
             setIsLoading(false);
         });
     }
 
+    const handleUserSubmit = () => {
+        setNavigate(true);
+    }
+
     useEffect(() => {
-        fetchIssue(params.username);
+        fetchUserInfo(params.username);
     }, [params])
 
-    if(redirect){
-        return <Navigate replace to="/notfound"/>
+    if(navigate){
+        return <Navigate replace to={`/users/${user.username}`} />
     }
 
     return (
@@ -39,7 +44,7 @@ const ProfileDetailPage = (props) => {
                     <CircularProgress />
                 )}
                 {viewedUser && (
-                    <UserDetail displayedUser={viewedUser} viewingUser={user} isAdmin={isAdmin} />
+                    <ProfileEdit editedUser={viewedUser} viewingUser={user} onUserSubmit={handleUserSubmit} />
                 )
                 }
             </Box>
@@ -47,4 +52,4 @@ const ProfileDetailPage = (props) => {
     );
 }
 
-export default ProfileDetailPage;
+export default ProfileEditPage;

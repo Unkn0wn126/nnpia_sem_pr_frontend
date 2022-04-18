@@ -1,7 +1,7 @@
 import { Stack, Divider  } from "@mui/material";
 import ProfileItem from "./ProfileItem";
 
-const ProfileList = ({profileList, viewingUser, onDelete}) => {
+const ProfileList = ({profileList, viewingUser, onDelete, isAdmin}) => {
     return(
     <Stack
     spacing={{ xs: 1, sm: 2, md: 4 }}
@@ -10,7 +10,7 @@ const ProfileList = ({profileList, viewingUser, onDelete}) => {
     justifyContent="space-evenly"
     >
         {profileList.map((user) => (
-            <ProfileItem key={user.id} viewingUser={viewingUser} user={user} onDelete={onDelete} />
+            <ProfileItem key={user.id} viewingUser={viewingUser} user={user} onDelete={onDelete} isAdmin={isAdmin} />
         ))}
     </Stack>
     );
