@@ -178,10 +178,10 @@ const IssueCreate = ({ issue, onIssueSubmit }) => {
                             {isSubmitting && <LinearProgress className="form-group-spaced" />}
                             <FormGroup className="form-group-spaced">
                                 <Stack
-                                    direction="row"
-                                    alignItems="center"
+                                    direction={{ xs: "column", sm: "row", md: "row" }}
+                                    alignItems={{xs: "stretch", md: "center"}}
                                     justifyContent="flex-end"
-                                    spacing={4}
+                                    spacing={{ xs: 1, sm: 2, md: 4 }}
                                 >
                                     <Button
                                         variant="contained"

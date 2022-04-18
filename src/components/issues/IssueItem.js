@@ -78,7 +78,7 @@ const IssueItem = ({ issue, viewingUser, onDelete }) => {
                             </Typography>
                             <Stack
                                 spacing={{ xs: 1, sm: 2, md: 4 }}
-                                direction="row"
+                                direction={{ xs: "column", sm: "row", md: "row" }}
                                 alignItems="center"
                                 justifyContent="flex-start"
                             >

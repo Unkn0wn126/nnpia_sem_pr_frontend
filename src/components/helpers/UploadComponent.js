@@ -29,7 +29,7 @@ const UploadComponent = ({ field, form, ...other }) => {
                     </IconButton>
                 </Tooltip>
             )}
-            <Tooltip title="Upload image">
+            <Tooltip title="Click or drag to upload image">
                 <div {...getRootProps({ className: 'dropzone' })}>
                     <input {...getInputProps()} />
                     <Avatar className="content-center form-group-spaced" src={imageURL[0]} sx={{ width: 100, height: 100 }} />

@@ -1,8 +1,13 @@
-import { Card, CardHeader, Avatar, CardContent, Typography, Link, Divider, Stack, Button } from "@mui/material"
+import { Card, CardHeader, Avatar, CardContent, Typography, Link, Divider, Stack, Button, Chip } from "@mui/material"
 import { useEffect, useContext, useState } from "react";
 import { Routes, Route, Link as RouterLink } from "react-router-dom";
 import UserService from "../../services/user.service";
 import ProfileEdit from "./ProfileEdit";
+
+const roleColors = {
+    "ROLE_USER": "info",
+    "ROLE_ADMIN": "error"
+}
 
 const ProfileItem = ({ user, viewingUser, onDelete }) => {
     const [viewedUser, setViewedUser] = useState({ ...user });
@@ -58,12 +63,15 @@ const ProfileItem = ({ user, viewingUser, onDelete }) => {
                 )}
                 {!isEditing && (
                     <Stack
-                        divider={<Divider orientation="horizontal" flexItem />}
+                        direction={{xs: "column", sm:"row", md:"row"}}
                         alignItems="stretch"
-                        justifyContent="space-evenly"
+                        justifyContent="flex-start"
+                        flexWrap="wrap"
+                        spacing={{ xs: 1, sm: 2, md: 2 }}
                     >
-                        <Typography variant="body1" color="text.secondary">
-                        </Typography>
+                    {viewedUser.roles.map(role => (
+                        <Chip label={role.type.replace("ROLE_", "")} color={roleColors[role.type]} />
+                    ))}
                     </Stack>
                 )}
                 {isEditing && (

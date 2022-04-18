@@ -6,7 +6,7 @@ import CommentCreate from "./CommentCreate";
 
 const CommentItem = ({ issue, comment, viewingUser, onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [viewedComment, setViewedComment] = useState({...comment});
+    const [viewedComment, setViewedComment] = useState({ ...comment });
 
     const handleEdit = () => {
         setIsEditing((prev) => !prev);
@@ -44,10 +44,10 @@ const CommentItem = ({ issue, comment, viewingUser, onDelete }) => {
                     spacing={2}
                 >
                     {(viewingUser && viewedComment.author.username === viewingUser.username) && (<Stack
+                        direction={{ xs: "column", sm: "row", md: "row" }}
+                        alignItems={{ xs: "stretch", md: "center" }}
+                        justifyContent="flex-end"
                         spacing={{ xs: 1, sm: 2, md: 4 }}
-                        direction="row"
-                        alignItems="stretch"
-                        justifyContent="flex-start"
                     >
                         <Button onClick={handleEdit} variant="contained">
                             Edit
