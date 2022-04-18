@@ -110,75 +110,81 @@ const IssueDetail = ({ issue, viewingUser, isAdmin }) => {
             />
             <Divider />
             <CardContent>
-            {!isEditing && (
-                    <>
-                        <Stack
-                            alignItems="stretch"
-                            justifyContent="space-evenly"
-                            spacing={2}
-                        >
-                        <Typography variant="h5" color="text.secondary">
-                            {viewedIssue.header}
-                        </Typography>
+                <Stack
+                    alignItems="stretch"
+                    justifyContent="space-evenly"
+                    spacing={2}
+                >
+                    {!isEditing && (
+                        <>
                             <Stack
-                                spacing={{ xs: 1, sm: 2, md: 4 }}
-                                direction={{xs: "column", sm:"row", md:"row"}}
-                                alignItems="center"
-                                justifyContent="flex-start"
+                                alignItems="stretch"
+                                justifyContent="space-evenly"
+                                spacing={2}
                             >
-                                <Chip label={viewedIssue.visibility} color={visibilityColor} />
-                                <Chip label={viewedIssue.severity} color={severityColor} />
-                                <Chip label={viewedIssue.completionState} color={completionStateColor} />
-                                {viewedIssue.dueDate && (<Typography variant="body1" >Due date {viewedIssue.dueDate}</Typography>)}
-                                {(isAdmin || (viewingUser && viewedIssue.author.username === viewingUser.username)) && (
-                                    <>
-                                        <Button onClick={handleEdit}  variant="contained">
-                                            Edit
-                                        </Button>
-                                        <Button onClick={handleDelete} variant="contained" color="error">
-                                            Delete
-                                        </Button>
-                                    </>
-                                )}
+                                <Typography variant="h5" color="text.secondary">
+                                    {viewedIssue.header}
+                                </Typography>
+                                <Stack
+                                    spacing={{ xs: 1, sm: 2, md: 4 }}
+                                    direction={{ xs: "column", sm: "row", md: "row" }}
+                                    alignItems={{ xs: "stretch", md: "center" }}
+                                    justifyContent="flex-start"
+                                >
+                                    <Chip label={viewedIssue.visibility} color={visibilityColor} />
+                                    <Chip label={viewedIssue.severity} color={severityColor} />
+                                    <Chip label={viewedIssue.completionState} color={completionStateColor} />
+                                    {viewedIssue.dueDate && (<Typography variant="body1" >Due date {viewedIssue.dueDate}</Typography>)}
+                                    {(isAdmin || (viewingUser && viewedIssue.author.username === viewingUser.username)) && (
+                                        <>
+                                            <Button onClick={handleEdit} variant="contained">
+                                                Edit
+                                            </Button>
+                                            <Button onClick={handleDelete} variant="contained" color="error">
+                                                Delete
+                                            </Button>
+                                        </>
+                                    )}
+                                </Stack>
+                                <Divider orientation="horizontal" flexItem />
+                                <Typography variant="body1" color="text.secondary">
+                                    {issue.content}
+                                </Typography>
                             </Stack>
-                            <Divider orientation="horizontal" flexItem />
-                            <Typography variant="body1" color="text.secondary">
-                                {issue.content}
-                            </Typography>
-                        </Stack>
-                    </>
-                )}
-                {isEditing && (
-                    <IssueCreate issue={viewedIssue} onIssueSubmit={handleIssueSubmit} />
-                )}
+                        </>
+                    )}
+                    {isEditing && (
+                        <IssueCreate issue={viewedIssue} onIssueSubmit={handleIssueSubmit} />
+                    )}
 
-                <Divider />
-                {viewingUser && (
-                    <>
-                        <Typography variant="h6" color="text.secondary">
-                            Create comment
-                        </Typography>
-                        <CommentCreate issue={viewedIssue} onCommentSubmit={handleCommentSubmit} />
-                    </>
-                )}
-                <Divider />
-                <Typography variant="h6" color="text.secondary">
-                    Comments
-                </Typography>
-                {isLoading && (
-                    <CircularProgress />
-                )}
-                {comments && (
-                    <CommentPagination
-                        issue={viewedIssue}
-                        comments={comments}
-                        viewingUser={viewingUser}
-                        onCommentSubmit={handleCommentSubmit}
-                        onCommentDelete={handleCommentDelete}
-                        page={page}
-                        handlePageChange={handlePageChange}
-                        isLoadingComments={isLoading} />
-                )}
+                    <Divider />
+                    {viewingUser && (
+                        <>
+                            <Typography variant="h6" color="text.secondary">
+                                Create comment
+                            </Typography>
+                            <CommentCreate issue={viewedIssue} onCommentSubmit={handleCommentSubmit} />
+                        </>
+                    )}
+                    <Divider />
+                    <Typography variant="h6" color="text.secondary">
+                        Comments
+                    </Typography>
+                    {isLoading && (
+                        <CircularProgress />
+                    )}
+                    {comments && (
+                        <CommentPagination
+                            issue={viewedIssue}
+                            comments={comments}
+                            viewingUser={viewingUser}
+                            onCommentSubmit={handleCommentSubmit}
+                            onCommentDelete={handleCommentDelete}
+                            page={page}
+                            handlePageChange={handlePageChange}
+                            isLoadingComments={isLoading} />
+                    )}
+                </Stack>
             </CardContent>
         </Card>
     )

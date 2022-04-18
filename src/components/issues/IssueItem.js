@@ -78,8 +78,8 @@ const IssueItem = ({ issue, viewingUser, onDelete, isAdmin }) => {
                             </Typography>
                             <Stack
                                 spacing={{ xs: 1, sm: 2, md: 4 }}
-                                direction={{ xs: "column", sm: "row", md: "row" }}
-                                alignItems="center"
+                                direction={{xs: "column", sm:"row", md:"row"}}
+                                alignItems={{xs: "stretch", md: "center"}}
                                 justifyContent="flex-start"
                             >
                                 <Chip label={viewedIssue.visibility} color={visibilityColor} />

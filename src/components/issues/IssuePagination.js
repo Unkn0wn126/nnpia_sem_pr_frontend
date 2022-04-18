@@ -21,7 +21,7 @@ const IssuePagination = ({ issues, page, viewingUser, handlePageChange, isLoadin
             }
             {(issues && issues.issues.length === 0) && (
                 <Stack spacing={4} alignItems="stretch" justifyContent="flex-end">
-                    <Typography variant="h4">
+                    <Typography variant="h6">
                         No issues found
                     </Typography>
                 </Stack>

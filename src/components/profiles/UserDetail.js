@@ -161,7 +161,7 @@ const UserDetail = ({ displayedUser, viewingUser, isAdmin }) => {
                             <Stack
                                 spacing={{ xs: 1, sm: 2, md: 4 }}
                                 direction={{xs: "column", sm:"row", md:"row"}}
-                                alignItems="center"
+                                alignItems={{xs: "stretch", md: "center"}}
                                 justifyContent="flex-start"
                             >
                                 {((viewingUser && displayedUser.username === viewingUser.username) || isAdmin) && (

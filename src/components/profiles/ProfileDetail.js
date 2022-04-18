@@ -1,4 +1,4 @@
-import { Card, CardHeader, Avatar, CardContent, Typography, Link, CircularProgress, Divider, Grid, Stack, Tabs, Tab, Box, Pagination } from "@mui/material"
+import { Card, CardHeader, Avatar, CardContent, Typography, Link, CircularProgress, Divider, Grid, Stack, Tabs, Tab, Box, Pagination, Chip } from "@mui/material"
 import PropTypes from 'prop-types';
 import { UserContext } from '../../providers/UserContext'
 import { useEffect, useContext, useState } from "react";
@@ -7,6 +7,7 @@ import CommentList from "../comments/CommentList";
 import IssueService from '../../services/issue.service';
 import IssueList from '../issues/IssueList';
 import IssuePagination from "../issues/IssuePagination";
+import UsersColors from "./users.colors"
 
 const ProfileDetail = ({ displayedUser }) => {
     return (
@@ -34,7 +35,15 @@ const ProfileDetail = ({ displayedUser }) => {
                     </Typography>
                 </Grid>
                 <Grid item xs={8} md={9}>
-                    {displayedUser.roles.map((role) => `${role.type} `)}
+                    <Stack
+                        direction={{ xs: "column", sm: "row", md: "row" }}
+                        alignItems="stretch"
+                        justifyContent="flex-start"
+                        flexWrap="wrap"
+                        spacing={{ xs: 1, sm: 2, md: 2 }}
+                    >
+                        {displayedUser.roles.map((role) => (<Chip key={role.type} label={role.type.replace("ROLE_", "")} variant="outlined" color={UsersColors.roleColors[role.type]} />))}
+                    </Stack>
                 </Grid>
                 <Grid item xs={4} md={3}>
                     <Typography variant="body1">

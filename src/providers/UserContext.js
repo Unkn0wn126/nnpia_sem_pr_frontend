@@ -15,7 +15,8 @@ const UserProvider = ({ children }) => {
 
     const logout = () => {
         AuthService.logout();
-        setUser(undefined);
+        setUser(AuthService.getCurrentUser());
+        setIsAdmin(AuthService.isAdmin());
     }
 
     return (

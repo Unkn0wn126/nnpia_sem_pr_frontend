@@ -21,7 +21,7 @@ const CommentPagination = ({ issue, comments, viewingUser, onCommentSubmit, onCo
             }
             {(comments && comments.comments.length === 0) && (
                 <Stack spacing={4} alignItems="stretch" justifyContent="flex-end">
-                    <Typography variant="h4">
+                    <Typography variant="h6">
                         No comments found
                     </Typography>
                 </Stack>

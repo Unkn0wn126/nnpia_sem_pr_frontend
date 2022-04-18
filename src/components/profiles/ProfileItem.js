@@ -4,11 +4,8 @@ import { useEffect, useContext, useState } from "react";
 import { Routes, Route, Link as RouterLink, Navigate } from "react-router-dom";
 import UserService from "../../services/user.service";
 import ProfileEdit from "./ProfileEdit";
+import UsersColors from "./users.colors"
 
-const roleColors = {
-    "ROLE_USER": "info",
-    "ROLE_ADMIN": "error"
-}
 
 const ProfileItem = ({ user, viewingUser, onDelete, isAdmin }) => {
     const [viewedUser, setViewedUser] = useState({ ...user });
@@ -55,6 +52,19 @@ const ProfileItem = ({ user, viewingUser, onDelete, isAdmin }) => {
             <Divider />
             <CardContent>
                 <Stack direction="column" alignItems="stretch" justifyContent="flex-start" spacing={1} sx={{ marginBottom: "10px" }}>
+                    {!isEditing && (
+                        <Stack
+                            direction={{ xs: "column", sm: "row", md: "row" }}
+                            alignItems="stretch"
+                            justifyContent="flex-start"
+                            flexWrap="wrap"
+                            spacing={{ xs: 1, sm: 2, md: 2 }}
+                        >
+                            {viewedUser.roles.map(role => (
+                                <Chip key={role.type} label={role.type.replace("ROLE_", "")} variant="outlined" color={UsersColors.roleColors[role.type]} />
+                            ))}
+                        </Stack>
+                    )}
                     {((viewingUser && viewedUser.username === viewingUser.username) || isAdmin) && (
                         <Stack
                             spacing={{ xs: 1, sm: 2, md: 4 }}
@@ -70,19 +80,6 @@ const ProfileItem = ({ user, viewingUser, onDelete, isAdmin }) => {
                                     Delete
                                 </Button>
                             )}
-                        </Stack>
-                    )}
-                    {!isEditing && (
-                        <Stack
-                            direction={{ xs: "column", sm: "row", md: "row" }}
-                            alignItems="stretch"
-                            justifyContent="flex-start"
-                            flexWrap="wrap"
-                            spacing={{ xs: 1, sm: 2, md: 2 }}
-                        >
-                            {viewedUser.roles.map(role => (
-                                <Chip key={role.type} label={role.type.replace("ROLE_", "")} color={roleColors[role.type]} />
-                            ))}
                         </Stack>
                     )}
                 </Stack>
