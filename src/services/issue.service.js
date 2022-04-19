@@ -1,12 +1,12 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 
-const getAllIssues = (pageNumber) => {
-    return axios.get(`${process.env.REACT_APP_BASE_URI}/api/v1/issues/?pageNumber=${pageNumber}`, {headers: authHeader()})
+const getAllIssues = (pageNumber, pageSize, sortDirection, sortBy) => {
+    return axios.get(`${process.env.REACT_APP_BASE_URI}/api/v1/issues/?pageNumber=${pageNumber}&pageSize=${pageSize}&direction=${sortDirection}&orderBy=${sortBy}`, {headers: authHeader()})
 }
 
-const getIssuesByAuthorName = (authorName, pageNumber) => {
-    return axios.get(`${process.env.REACT_APP_BASE_URI}/api/v1/issues/user/${authorName}?pageNumber=${pageNumber}`, {headers: authHeader()})
+const getIssuesByAuthorName = (authorName, pageNumber, pageSize, sortDirection, sortBy) => {
+    return axios.get(`${process.env.REACT_APP_BASE_URI}/api/v1/issues/user/${authorName}?pageNumber=${pageNumber}&pageSize=${pageSize}&direction=${sortDirection}&orderBy=${sortBy}`, {headers: authHeader()})
 }
 
 const getIssueById = (id) => {
