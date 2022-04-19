@@ -106,7 +106,7 @@ const IssueDetail = ({ issue, viewingUser, isAdmin }) => {
                     <Avatar aria-label="author" alt={viewedIssue.author.username} src={viewedIssue.author.profile.profilePicture} />
                 }
                 title={<Link component={RouterLink} to={`/users/${viewedIssue.author.username}`} underline='none'>{issue.author.profile.nickname}</Link>}
-                subheader={viewedIssue.published}
+                subheader={viewedIssue.published === viewedIssue.lastEdited ? `${viewedIssue.published}` : `${viewedIssue.published} (last edit: ${viewedIssue.lastEdited})`}
             />
             <Divider />
             <CardContent>

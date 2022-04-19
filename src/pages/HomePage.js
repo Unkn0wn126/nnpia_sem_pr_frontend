@@ -15,7 +15,7 @@ const HomePage = (props) => {
             <Box sx={{ paddingTop: "30px", paddingBottom: "20px" }} alignItems="center">
                 <Card>
                     <CardContent>
-                        <Typography variant='h1' component="h1">
+                        <Typography variant='h2' component="h1">
                             Unknown's Issue tracker
                         </Typography>
                     </CardContent>

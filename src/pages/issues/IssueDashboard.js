@@ -19,16 +19,18 @@ const IssueDashboard = (props) => {
     const [issues, setIssues] = useState(undefined);
     const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState((query.get("page") && query.get("page") >= 1) ? parseInt(query.get("page")) : 1);
+    const [pageSize, setPageSize] = useState((query.get("pageSize") && query.get("pageSize") >= 1) ? parseInt(query.get("pageSize")) : 5);
+    const [sortBy, setSortBy] = useState(query.get("orderBy") ? query.get("orderBy").split(',').map(item => {return {name: item}}) : [{name: "published"}]);
+    const [sortDirection, setSortDirection] = useState((query.get("direction") ? query.get("direction") : "DESC"));
     const handlePageChange = (event, value) => {
         setPage(value);
-        history(`/issues?page=${value}`);
-        fetchIssues(value - 1);
     }
 
-    const fetchIssues = (pageNumber) => {
+    const fetchIssues = () => {
         setIsLoading(true);
-        IssueService.getAllIssues(pageNumber).then((data) => {
+        IssueService.getAllIssues(page - 1, pageSize, sortDirection, sortBy.map((item) => item.name)).then((data) => {
             setIssues(data.data);
+            history(`/issues?page=${page}&pageSize=${pageSize}&direction=${sortDirection}&orderBy=${sortBy.map((item) => item.name)}`);
         }).catch(err => {
 
         }).finally(() => {
@@ -37,17 +39,29 @@ const IssueDashboard = (props) => {
     }
 
     const handleIssueDelete = () => {
-        fetchIssues(page - 1);
+        fetchIssues();
+    }
+
+    const handleSortDirectionChange = (event) => {
+        setSortDirection(event.target.value);
+    }
+
+    const handlePageSizeChange = (event) => {
+        setPageSize(event.target.value);
+    }
+
+    const handleSortByChange = (newValue) => {
+        setSortBy(newValue);
     }
 
     useEffect(() => {
-        fetchIssues(page - 1);
-    }, [])
+        fetchIssues();
+    }, [page, pageSize, sortBy, sortDirection])
 
     return (
         <Container maxWidth="md">
             <Box sx={{ paddingTop: "30px", paddingBottom: "20px" }}>
-                <IssuePagination issues={issues} viewingUser={user} page={page} handlePageChange={handlePageChange} onDelete={handleIssueDelete} isLoadingIssues={isLoading} isAdmin={isAdmin} />
+                <IssuePagination issues={issues} viewingUser={user} page={page} handlePageChange={handlePageChange} onDelete={handleIssueDelete} isLoadingIssues={isLoading} isAdmin={isAdmin} sortDirection={sortDirection} onSortDirectionChange={handleSortDirectionChange} sortBy={sortBy} onSortByChange={handleSortByChange} pageSize={pageSize} onPageSizeChange={handlePageSizeChange} />
             </Box>
         </Container>
     );

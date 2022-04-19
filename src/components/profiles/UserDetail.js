@@ -40,13 +40,16 @@ TabPanel.propTypes = {
 
 const UserDetail = ({ displayedUser, viewingUser, isAdmin }) => {
     const [value, setValue] = useState(0);
-    const {logout} = useContext(UserContext);
+    const { logout } = useContext(UserContext);
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
     const [issues, setIssues] = useState(undefined);
     const [isLoadingIssues, setisLoadingIssues] = useState(true);
     const [issuePage, setIssuePage] = useState(1);
+    const [pageSize, setPageSize] = useState(5);
+    const [sortBy, setSortBy] = useState([{ name: "published" }]);
+    const [sortDirection, setSortDirection] = useState("DESC");
 
     const [comments, setComments] = useState(undefined);
     const [isLoadingComments, setisLoadingComments] = useState(true);
@@ -55,6 +58,18 @@ const UserDetail = ({ displayedUser, viewingUser, isAdmin }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [isEditingPassword, setIsEditingPassword] = useState(false);
     const [isDeleted, setIsDeleted] = useState(false);
+
+    const handleSortDirectionChange = (event) => {
+        setSortDirection(event.target.value);
+    }
+
+    const handlePageSizeChange = (event) => {
+        setPageSize(event.target.value);
+    }
+
+    const handleSortByChange = (newValue) => {
+        setSortBy(newValue);
+    }
 
     const handleIssuePageChange = (event, value) => {
         setIssuePage(value);
@@ -67,11 +82,11 @@ const UserDetail = ({ displayedUser, viewingUser, isAdmin }) => {
     }
 
 
-    const fetchIssues = (pageNumber) => {
+    const fetchIssues = () => {
         setisLoadingIssues(true);
-        IssueService.getIssuesByAuthorName(displayedUser.username, pageNumber).then((data) => {
+        IssueService.getIssuesByAuthorName(displayedUser.username, issuePage - 1, pageSize, sortDirection, sortBy.map((item) => item.name)).then((data) => {
             setIssues(data.data);
-            if(data.data.totalPages <= data.data.currentPage && data.data.currentPage > 0){
+            if (data.data.totalPages <= data.data.currentPage && data.data.currentPage > 0) {
                 setIssuePage((previous) => previous - 1);
                 fetchIssues(data.data.currentPage - 1);
             }
@@ -85,7 +100,7 @@ const UserDetail = ({ displayedUser, viewingUser, isAdmin }) => {
         setisLoadingComments(true);
         CommentService.getCommentsByAuthorName(displayedUser.username, pageNumber).then((data) => {
             setComments(data.data);
-            if(data.data.totalPages <= data.data.currentPage && data.data.currentPage > 0){
+            if (data.data.totalPages <= data.data.currentPage && data.data.currentPage > 0) {
                 setCommentPage((previous) => previous - 1);
                 fetchComments(data.data.currentPage - 1);
             }
@@ -105,7 +120,7 @@ const UserDetail = ({ displayedUser, viewingUser, isAdmin }) => {
 
     const handleUserDelete = () => {
         UserService.deleteUser(displayedUser.id).then(() => {
-            if(displayedUser.username === viewingUser.username){
+            if (displayedUser.username === viewingUser.username) {
                 logout();
             }
             setIsDeleted(true);
@@ -123,22 +138,22 @@ const UserDetail = ({ displayedUser, viewingUser, isAdmin }) => {
     }
 
     const handleIssueDelete = () => {
-        fetchIssues(issuePage - 1);
+        fetchIssues();
     }
 
     useEffect(() => {
         if (value === 1) {
-            fetchIssues(issuePage - 1);
+            fetchIssues();
         } else if (value === 2) {
             fetchComments(commentPage - 1);
         }
-    }, [value]);
+    }, [value, issuePage, pageSize, sortDirection, sortBy]);
 
-    if(isEditing){
+    if (isEditing) {
         return <Navigate replace to={`/users/edit/${displayedUser.username}`} />
-    }else if(isDeleted){
-        return <Navigate replace to={`/users/`}/>
-    }else if(isEditingPassword){
+    } else if (isDeleted) {
+        return <Navigate replace to={`/users/`} />
+    } else if (isEditingPassword) {
         return <Navigate replace to={`/users/change-password/${displayedUser.username}`} />
     }
 
@@ -160,16 +175,16 @@ const UserDetail = ({ displayedUser, viewingUser, isAdmin }) => {
                             </Typography>
                             <Stack
                                 spacing={{ xs: 1, sm: 2, md: 4 }}
-                                direction={{xs: "column", sm:"row", md:"row"}}
-                                alignItems={{xs: "stretch", md: "center"}}
+                                direction={{ xs: "column", sm: "row", md: "row" }}
+                                alignItems={{ xs: "stretch", md: "center" }}
                                 justifyContent="flex-start"
                             >
                                 {((viewingUser && displayedUser.username === viewingUser.username) || isAdmin) && (
                                     <>
-                                        <Button onClick={handleUserEdit}  variant="contained">
+                                        <Button onClick={handleUserEdit} variant="contained">
                                             Edit
                                         </Button>
-                                        <Button onClick={handlePasswordEdit}  variant="contained">
+                                        <Button onClick={handlePasswordEdit} variant="contained">
                                             Change password
                                         </Button>
                                         {((isAdmin && displayedUser.username !== viewingUser.username) || (!isAdmin && displayedUser.username === viewingUser.username)) && (
@@ -192,7 +207,7 @@ const UserDetail = ({ displayedUser, viewingUser, isAdmin }) => {
                         <ProfileDetail displayedUser={displayedUser} />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        <IssuePagination viewingUser={viewingUser} issues={issues} page={issuePage} handlePageChange={handleIssuePageChange} onDelete={handleIssueDelete} isLoadingIssues={isLoadingIssues} isAdmin={isAdmin} />
+                        <IssuePagination viewingUser={viewingUser} issues={issues} page={issuePage} handlePageChange={handleIssuePageChange} onDelete={handleIssueDelete} isLoadingIssues={isLoadingIssues} isAdmin={isAdmin} sortDirection={sortDirection} onSortDirectionChange={handleSortDirectionChange} sortBy={sortBy} onSortByChange={handleSortByChange} pageSize={pageSize} onPageSizeChange={handlePageSizeChange} />
                     </TabPanel>
                     <TabPanel value={value} index={2}>
                         <CommentPagination
